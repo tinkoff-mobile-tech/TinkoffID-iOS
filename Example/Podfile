@@ -1,0 +1,6 @@
+use_frameworks!
+
+target 'TinkoffIDExample' do
+  pod 'TinkoffID', :path => '../'
+  pod 'SnapKit'
+end

@@ -1,0 +1,23 @@
+PODS:
+  - SnapKit (5.0.1)
+  - TinkoffID (0.0.1)
+
+DEPENDENCIES:
+  - SnapKit
+  - TinkoffID (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - SnapKit
+
+EXTERNAL SOURCES:
+  TinkoffID:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  TinkoffID: b1643d8091cf030a4e5a63ab7e62ffab46c8beba
+
+PODFILE CHECKSUM: a2220c4cb291ec6b50adf28d56fed566606aa646
+
+COCOAPODS: 1.10.0
