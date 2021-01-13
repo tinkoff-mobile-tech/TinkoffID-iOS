@@ -136,6 +136,10 @@ tinkoffId.signOut(accessToken: credentials.accessToken) { result in
 + `idToken` - идентификатор пользователя в формате JWT
 + `expirationTimeout` - время, через которое `accessToken` станет неактуальным и нужно будет получить новый с помощью `refreshToken`
 
+### Хранение Refresh Token
+
+При получении `TinkoffTokenPayload` и наличии у него поля `refreshToken` имеет смысл сохранить значение этого поля чтобы иметь возможность запросить новый `accessToken` когда прежний станет неактивным. Рекомендуемый способ хранения токена - [Keychain Services](https://developer.apple.com/documentation/security/keychain_services)
+
 ## UI
 SDK поставляет фирменную кнопку входа через Тинькофф. Кнопка представлена в двух стилях: `.default` (высотой 56 точек) и `.compact` (40 точек).
 Для получения экземпляра кнопки необходимо использовать статический метод `build` класса `TinkoffIDButtonBuilder`:
