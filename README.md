@@ -10,15 +10,19 @@ TinkoffID доступен через [CocoaPods](https://cocoapods.org). Для
 pod 'TinkoffID'
 ```
 
+Затем выполните команду `pod install` в директории проекта.
+
 ## Требования к приложению
 
 Для работы SDK необходимо следующее:
 
++ iOS 10 и выше
 + Зарегистрированный идентификатор авторизуемого приложения (`client_id`)
 + Зарегистрированная авторизуемым приложением [URL схема](https://developer.apple.com/documentation/uikit/inter-process_communication/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app), которая будет использоваться для возврата в приложение после авторизации
 
 ## Структура публичной части SDK
 
+### ITinkoffID
 Авторизацией занимается объект, реализующий протокол `ITinkoffID`. В свою очередь, протокол `ITinkoffID` является композицией следующих протоколов:
 
 + `ITinkoffAuthInitiator` - инициатор начала процесса авторизации
@@ -27,6 +31,19 @@ pod 'TinkoffID'
 + `ITinkoffSignOutInitiator` - инициатор отзыва авторизационных данных
 
 В зависимости от архитектуры приложения можно использовать непосредственно`ITinkoffID` или каждый подпротокол отдельно в требуемой части системы.
+
+### TinkoffAuthError
+`TinkoffAuthError` типа `enum` описывает возможные ошибки авторизации
+
+| Значение                     | Описание                                                      |
+| ---------------------------- |---------------------------------------------------------------|
+| `failedToLaunchApp`          | Не удалось запустить приложение Тинькофф                      |
+| `cancelledByUser`            | Авторизация отменена пользователем после перехода в Тинькофф  |
+| `unavailable`                | Авторизация сторонних приложений недоступна для пользователя  |
+| `failedToObtainToken`	       | Не удалось завершить авторизацию после возврата из приложения |
+| `failedToRefreshCredentials` | Не удалось обновить токены                                    |
+
+При получении ошибки рекомендуется предложить пользователю попробовать позже.
 
 ## Получение ITinkoffID
 
@@ -42,7 +59,7 @@ let targetApp = TinkoffApp.bank
 
 // Инициализация фабрики
 let builder = TinkoffIDBuilder(clientId: clientId,
-            									 callbackUrl: callbackUrl,
+			       callbackUrl: callbackUrl,
                                app: targetApp)
 // Получение ITinkoffID
 let tinkoffId = builder.buildSignInEngine()
@@ -62,13 +79,13 @@ let tinkoffId = builder.buildSignInEngine()
 
 ```swift
 tinkoffId.startTinkoffAuth { result in
-	do {
-		let payload = try result.get()
-                
-		print("Access token obtained: \(payload.accessToken)")
-	} catch {
-		print(error)
-	}
+    do {
+        let payload = try result.get()
+        
+        print("Access token obtained: \(payload.accessToken)"
+    } catch {
+        print(error)
+    }
 }
 ```
 
@@ -82,7 +99,7 @@ tinkoffId.startTinkoffAuth { result in
 func application(_ app: UIApplication,
                  open url: URL,
                  options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-	return tinkoffId.handleCallbackUrl(url)
+    return tinkoffId.handleCallbackUrl(url)
 }
 ```
 
@@ -98,11 +115,11 @@ SDK обработает переданные в URL параметры заве
 let credentials: TinkoffTokenPayload = ...
 
 tinkoffId.obtainTokenPayload(using: credentials.refreshToken) { result in
-	do {
-		let newCredentials: TinkoffTokenPayload = try result.get()
-	} catch {
-		print(error)
-	}
+    do {
+        let newCredentials: TinkoffTokenPayload = try result.get()
+    } catch {
+        print(error)
+    }
 }
 ```
 
@@ -114,13 +131,13 @@ tinkoffId.obtainTokenPayload(using: credentials.refreshToken) { result in
 let credentials: TinkoffTokenPayload = ...
         
 tinkoffId.signOut(accessToken: credentials.accessToken) { result in
-	do {
-		_ = try result.get()
-    
-		print("Signed out")
-	} catch {
-		print(error)
-	}
+    do {
+        _ = try result.get()
+        
+        print("Signed out")
+    } catch {
+        print(error)
+    }
 }
 ```
 
@@ -133,13 +150,48 @@ tinkoffId.signOut(accessToken: credentials.accessToken) { result in
 + `idToken` - идентификатор пользователя в формате JWT
 + `expirationTimeout` - время, через которое `accessToken` станет неактуальным и нужно будет получить новый с помощью `refreshToken`
 
+### Хранение Refresh Token
+
+При получении `TinkoffTokenPayload` и наличии у него поля `refreshToken` имеет смысл сохранить значение этого поля чтобы иметь возможность запросить новый `accessToken`, когда прежний станет неактивным. Рекомендуемый способ хранения токена - [Keychain Services](https://developer.apple.com/documentation/security/keychain_services)
+
+## UI
+SDK поставляет фирменную кнопку входа через Тинькофф. Кнопка представлена в двух стилях: `.default` (высотой 56 точек) и `.compact` (40 точек).
+Для получения экземпляра кнопки необходимо использовать статический метод `build` класса `TinkoffIDButtonBuilder`:
+
+```swift
+let button: UIControl = TinkoffIDButtonBuilder.build(.default)
+```
+
+Обратите внимание: после получения кнопки необходимо расположить её на экране, а также добавить обработчик события нажатия. 
+Для верстки рекомендуется использовать `AutoLayout` без указания высоты так как она задается с помощью `intrinsicContentSize`.
+
 ## Пример приложения
 
 SDK поставляется с примером приложения. Для запуска примера склонируйте репозиторий, выполните команду `pod install` в папке Example, откройте сгенерированный `.xcworkspace`файл и запустите проект.
 
-## Автор
+Приложение включает в себя `AppDelegate` и `AuthViewController`.
 
-Дмитрий Оверчук, d.overchuk@tinkoff.ru
+### AppDelegate
+
+`AppDelegate` создает `AuthViewController` и устанавливает его в качестве корневого контроллера окна приложения. При запуске приложения создается `TinkoffIDBuilder`, собирающий `ITinkoffID` в методе `applicationDidFinishLaunching` и передающий его в качестве параметров при инициализации `AuthViewController`.
+
+⚠️ Обратите внимание! В `AppDelegate.swift` определена структура `Constant`, одним из полей которой является `clientId` типа  `String`. Для тестирования авторизации необходимо заменить её содержимое `client_id`, полученным при регистрации в `Tinkoff ID`.
+
+### AuthViewController
+
+`AuthViewController` инициируется ссылками на объекты, реализующими `ITinkoffAuthInitiator`, `ITinkoffCredentialsRefresher` и `ITinkoffSignOutInitiator` соответственно.
+
+В текущей реализации все эти ссылки указывают на один и тот же экземпляр объекта `TinkoffID`, реализующий интерфейс `ITinkoffID`. Такой подход был выбран для демонстрации возможности использования подинтерфейсов `ITinkoffID` в той или иной части системы. Пользователь SDK вправе сам решать использовать ли ему единый интерфейс `ITinkoffID` или необходимый подинтерфейс в зависимости от архитектуры приложения. 
+
+Подробнее с подинтерфесами `ITinkoffID` можно ознакомиться в разделе `Структура публичной части SDK`.
+
+После загрузки `view` контроллер добавляет на него кнопку входа через Тинькофф, по нажатию на которую будет инициирована авторизация.
+
+## Поддержка
+Сообщать об ошибках и запрашивать новый функционал можно в разделе [Issues](https://github.com/tinkoff-mobile-tech/TinkoffID-iOS/issues)
+
+## Автор
+Дмитрий Оверчук, d.overchuk@tinkoff.ru
 
 ## Лицензия
 
