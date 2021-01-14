@@ -152,7 +152,7 @@ tinkoffId.signOut(accessToken: credentials.accessToken) { result in
 
 ### Хранение Refresh Token
 
-При получении `TinkoffTokenPayload` и наличии у него поля `refreshToken` имеет смысл сохранить значение этого поля чтобы иметь возможность запросить новый `accessToken` когда прежний станет неактивным. Рекомендуемый способ хранения токена - [Keychain Services](https://developer.apple.com/documentation/security/keychain_services)
+При получении `TinkoffTokenPayload` и наличии у него поля `refreshToken` имеет смысл сохранить значение этого поля чтобы иметь возможность запросить новый `accessToken`, когда прежний станет неактивным. Рекомендуемый способ хранения токена - [Keychain Services](https://developer.apple.com/documentation/security/keychain_services)
 
 ## UI
 SDK поставляет фирменную кнопку входа через Тинькофф. Кнопка представлена в двух стилях: `.default` (высотой 56 точек) и `.compact` (40 точек).
@@ -175,7 +175,7 @@ SDK поставляется с примером приложения. Для з
 
 `AppDelegate` создает `AuthViewController` и устанавливает его в качестве корневого контроллера окна приложения. При запуске приложения создается `TinkoffIDBuilder`, собирающий `ITinkoffID` в методе `applicationDidFinishLaunching` и передающий его в качестве параметров при инициализации `AuthViewController`.
 
-⚠️ Обратите внимание! В `AppDelegate.swift` определена структура `Constant`, одним из полей которой является `clientId` типа  `String`. Для тестирования авторизации необходима заменить её содержимое `client_id`, полученным при регистрации в `Tinkoff ID`.
+⚠️ Обратите внимание! В `AppDelegate.swift` определена структура `Constant`, одним из полей которой является `clientId` типа  `String`. Для тестирования авторизации необходимо заменить её содержимое `client_id`, полученным при регистрации в `Tinkoff ID`.
 
 ### AuthViewController
 
