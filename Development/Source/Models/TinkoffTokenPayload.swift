@@ -8,7 +8,7 @@
 import Foundation
 
 /// Авторизационные данные
-public struct TinkoffTokenPayload {
+public struct TinkoffTokenPayload: Equatable {
     /// Токен для обращения к API Тинькофф
     public let accessToken: String
     /// Токен, необходимый для получения нового `accessToken`

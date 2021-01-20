@@ -60,7 +60,9 @@ final class AuthViewController: UIViewController {
     private func signOutButtonTapped() {
         guard let token = credentials?.accessToken else { return }
         
-        signOutInitializer.signOut(accessToken: token, completion: handleSignOutResult)
+        signOutInitializer.signOut(with: token,
+                                   tokenTypeHint: .access,
+                                   completion: handleSignOutResult(_:))
     }
     
     @objc

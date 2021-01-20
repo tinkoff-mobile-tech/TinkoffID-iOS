@@ -8,7 +8,7 @@
 import Foundation
 
 /// Результат обработки URL
-enum CallbackURLParseResult {
+enum CallbackURLParseResult: Equatable {
     /// Удалось извлечь код
     case codeObtained(String)
     /// Удалось извлечь флаг об отмене процесса пользователем

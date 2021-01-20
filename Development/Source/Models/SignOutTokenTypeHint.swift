@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SignOutTokenTypeHint: String {
+public enum SignOutTokenTypeHint: String {
     case access = "access_token"
     case refresh = "refresh_token"
 }

@@ -23,17 +23,20 @@ public final class TinkoffIDBuilder {
     
     public func build() -> ITinkoffID {
         let urlSchemeBuilder = URLSchemeBuilder(baseUrlString: app.authUrl)
-        let appLauncher = URLSchemeAppLauncher(builder: urlSchemeBuilder,
-                                               appUrlScheme: app.urlScheme)
+        let appLauncher = URLSchemeAppLauncher(appUrlScheme: app.urlScheme,
+                                               builder: urlSchemeBuilder,
+                                               router: UIApplication.shared)
         
         let requestBuilder = RequestBuilder(baseUrl: app.apiBaseUrl)
-        let api = API(requestBuilder: requestBuilder)
+        let api = API(requestBuilder: requestBuilder,
+                      requestProcessor: URLSession.shared,
+                      responseDispatcher: DispatchQueue.main)
         
         let codeVerifierGenerator = RFC7636PKCECodeVerifierGenerator()
         let codeChallengeDerivator = RFC7636PKCECodeChallengeDerivator()
         
         let payloadGenerator = PKCEPayloadGenerator(codeVerifierGenerator: codeVerifierGenerator,
-                                                    codeChallengeGenerator: codeChallengeDerivator)
+                                                    codeChallengeDerivator: codeChallengeDerivator)
         
         let callbackUrlParser = CallbackURLParser()
         

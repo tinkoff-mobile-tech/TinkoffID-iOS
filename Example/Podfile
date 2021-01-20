@@ -1,6 +1,6 @@
 use_frameworks!
 
 target 'TinkoffIDExample' do
-  pod 'TinkoffID', :path => '../'
+  pod 'TinkoffID', :path => '../', :testspecs => ['Tests']
   pod 'SnapKit'
 end

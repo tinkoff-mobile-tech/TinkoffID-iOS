@@ -9,21 +9,21 @@ import Foundation
 
 final class PKCEPayloadGenerator: IPKCEPayloadGenerator {
     
-    private let codeVerifierGenerator: IPKCECodeVerifierGenerator
-    private let codeChallengeGenerator: IPKCECodeChallengeDerivator
+    let codeVerifierGenerator: IPKCECodeVerifierGenerator
+    let codeChallengeDerivator: IPKCECodeChallengeDerivator
     
     init(codeVerifierGenerator: IPKCECodeVerifierGenerator,
-         codeChallengeGenerator: IPKCECodeChallengeDerivator) {
+         codeChallengeDerivator: IPKCECodeChallengeDerivator) {
         self.codeVerifierGenerator = codeVerifierGenerator
-        self.codeChallengeGenerator = codeChallengeGenerator
+        self.codeChallengeDerivator = codeChallengeDerivator
     }
     
-    func generatePayload() -> PKCECodePayload {
+    func generatePayload() throws -> PKCECodePayload {
         let codeVerifier = codeVerifierGenerator.generateCodeVerifier()
-        let codeChallenge = codeChallengeGenerator.deriveCodeChallenge(using: codeVerifier)
+        let codeChallenge = try codeChallengeDerivator.deriveCodeChallenge(using: codeVerifier)
         
         return PKCECodePayload(verifier: codeVerifier,
                                challenge: codeChallenge,
-                               challengeMethod: codeChallengeGenerator.codeChallengeMethod)
+                               challengeMethod: codeChallengeDerivator.codeChallengeMethod)
     }
 }

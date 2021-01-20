@@ -40,17 +40,13 @@ public protocol ITinkoffCredentialsRefresher {
 
 /// Объект, инициирующий отзыв авторизации по `access` или `refresh` токену
 public protocol ITinkoffSignOutInitiator {
-    /// Отзывает авторизацию по `access` токену
-    /// - Parameters:
-    ///   - accessToken: Значение токена
-    ///   - completion: Коллбек, который может содержать ошибку или ничего если ошибки не произошло. Всегда вызывается на главном потоке
-    func signOut(accessToken: String, completion: @escaping SignOutCompletion)
     
-    /// Отзывает авторизацию по `refresh` токену
+    /// Отзывает авторизацию по заданному токену
     /// - Parameters:
-    ///   - accessToken: Значение токена
+    ///   - token: Токен
+    ///   - tokenTypeHint: Тип токена
     ///   - completion: Коллбек, который может содержать ошибку или ничего если ошибки не произошло. Всегда вызывается на главном потоке
-    func signOut(refreshToken: String, completion: @escaping SignOutCompletion)
+    func signOut(with token: String, tokenTypeHint: SignOutTokenTypeHint, completion: @escaping SignOutCompletion)
 }
 
 public protocol ITinkoffID: ITinkoffAuthInitiator, ITinkoffAuthCallbackHandler, ITinkoffCredentialsRefresher, ITinkoffSignOutInitiator {}

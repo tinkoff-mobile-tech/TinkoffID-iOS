@@ -47,7 +47,7 @@ final class RequestBuilder: IRequestBuilder {
                            _ clientId: String,
                            _ codeVerifier: String,
                            _ redirectUri: String) throws -> URLRequest {
-        return try buildTokenRequest(clientId: clientId, grantType: .grantTypeAuthorizationCode, bodyParams: [
+        try buildTokenRequest(clientId: clientId, grantType: .grantTypeAuthorizationCode, bodyParams: [
             .code: code,
             .codeVerifier: codeVerifier,
             .redirectUri: redirectUri
@@ -55,7 +55,7 @@ final class RequestBuilder: IRequestBuilder {
     }
     
     func buildTokenRequest(with refreshToken: String, clientId: String) throws -> URLRequest {
-        return try buildTokenRequest(clientId: clientId, grantType: .grantTypeRefreshToken, bodyParams: [
+        try buildTokenRequest(clientId: clientId, grantType: .grantTypeRefreshToken, bodyParams: [
             .refreshToken : refreshToken
         ])
     }
@@ -78,6 +78,7 @@ final class RequestBuilder: IRequestBuilder {
     }
     
     // MARK: - Private
+    
     private func getAuthorizationHeaderValue(for clientId: String) -> String {
         return String(format: .authorizationHeaderFormat, Data((clientId + ":").utf8).base64EncodedString())
     }
@@ -117,6 +118,7 @@ final class RequestBuilder: IRequestBuilder {
 private extension Dictionary where Key == RequestBuilder.Param, Value == String {
     var httpBody: Data? {
         map { $0.key.rawValue + "=" + $0.value }
+            .sorted()
             .joined(separator: "&")
             .data(using: .utf8)
     }

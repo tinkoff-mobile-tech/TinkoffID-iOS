@@ -1,5 +1,5 @@
 //
-//  URLSchemeAppLauncher.swift
+//  URLSchemeAppLauncherTests.swift
 //  TinkoffID
 //
 //  Created by Dmitry Overchuk on 25.03.2020.
@@ -13,45 +13,27 @@ final class URLSchemeAppLauncher: IAppLauncher {
         case launchFailure
     }
     
-    private let app = UIApplication.shared
-    private let builder: IURLSchemeBuilder
-    private let appUrlScheme: String
+    let builder: IURLSchemeBuilder
+    let appUrlScheme: String
+    let router: IURLRouter
     
-    init(builder: IURLSchemeBuilder, appUrlScheme: String) {
+    init(appUrlScheme: String, builder: IURLSchemeBuilder, router: IURLRouter) {
         self.builder = builder
         self.appUrlScheme = appUrlScheme
+        self.router = router
     }
     
     var canLaunchApp: Bool {
-        app.canOpenURL(
-            URL(string: appUrlScheme)
-        )
+        URL(string: appUrlScheme)
+            .map(router.canOpenURL) ?? false
     }
     
     func launchApp(with options: AppLaunchOptions) throws {
         let appUrl = try builder.buildUrlScheme(with: options)
         
-        if app.canOpenURL(appUrl) {
-            // Открывается приложение
-            app.open(appUrl)
-        } else {
+        if !router.open(appUrl) {
             // Не удалось запустить приложение
             throw Error.launchFailure
         }
-    }
-}
-
-private extension UIApplication {
-    
-    func canOpenURL(_ url: URL?) -> Bool {
-        guard let url = url else { return false }
-        
-        return canOpenURL(url)
-    }
-    
-    func open(_ url: URL?) {
-        guard let url = url else { return }
-        
-        open(url, options: [:], completionHandler: nil)
     }
 }

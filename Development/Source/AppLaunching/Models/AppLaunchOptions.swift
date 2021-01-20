@@ -8,7 +8,7 @@
 import Foundation
 
 /// Опции запуска приложения
-struct AppLaunchOptions {
+struct AppLaunchOptions: Equatable {
     /// Идентификатор авторизуемого клиента
     let clientId: String
     /// URL обратного вызова по которому будет осуществлен переход обратно в приложение
