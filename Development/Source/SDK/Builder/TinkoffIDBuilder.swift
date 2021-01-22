@@ -11,23 +11,36 @@ public final class TinkoffIDBuilder {
     
     private let clientId: String
     private let callbackUrl: String
-    private let app: TinkoffApp
+    private let appConfiguration: TargetAppConfiguration
+    private let environmentConfiguration: EnvironmentConfiguration
+    
+    public convenience init(clientId: String,
+                            callbackUrl: String,
+                            app: TinkoffApp = .bank,
+                            environment: TinkoffEnvironment = .production) {
+        self.init(clientId: clientId,
+                  callbackUrl: callbackUrl,
+                  appConfiguration: app,
+                  environmentConfiguration: environment)
+    }
     
     public init(clientId: String,
                 callbackUrl: String,
-                app: TinkoffApp) {
+                appConfiguration: TargetAppConfiguration,
+                environmentConfiguration: EnvironmentConfiguration) {
         self.clientId = clientId
         self.callbackUrl = callbackUrl
-        self.app = app
+        self.environmentConfiguration = environmentConfiguration
+        self.appConfiguration = appConfiguration
     }
     
     public func build() -> ITinkoffID {
-        let urlSchemeBuilder = URLSchemeBuilder(baseUrlString: app.authUrl)
-        let appLauncher = URLSchemeAppLauncher(appUrlScheme: app.urlScheme,
+        let urlSchemeBuilder = URLSchemeBuilder(baseUrlString: appConfiguration.authUrl)
+        let appLauncher = URLSchemeAppLauncher(appUrlScheme: appConfiguration.urlScheme,
                                                builder: urlSchemeBuilder,
                                                router: UIApplication.shared)
         
-        let requestBuilder = RequestBuilder(baseUrl: app.apiBaseUrl)
+        let requestBuilder = RequestBuilder(baseUrl: environmentConfiguration.apiBaseUrl)
         let api = API(requestBuilder: requestBuilder,
                       requestProcessor: URLSession.shared,
                       responseDispatcher: DispatchQueue.main)
