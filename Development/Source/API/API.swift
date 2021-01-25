@@ -9,17 +9,16 @@ import Foundation
 
 final class API: IAPI {
     
-    enum Error: Swift.Error {
-        case unknown
-    }
-    
-    private lazy var session = URLSession.shared
     private lazy var decoder = JSONDecoder()
     
-    private let requestBuilder: IRequestBuilder
+    let requestBuilder: IRequestBuilder
+    let requestProcessor: IURLRequestProcessor
+    let responseDispatcher: Dispatcher
     
-    init(requestBuilder: IRequestBuilder) {
+    init(requestBuilder: IRequestBuilder, requestProcessor: IURLRequestProcessor, responseDispatcher: Dispatcher) {
         self.requestBuilder = requestBuilder
+        self.requestProcessor = requestProcessor
+        self.responseDispatcher = responseDispatcher
     }
     
     func obtainCredentials(with code: String,
@@ -56,34 +55,17 @@ final class API: IAPI {
         do {
             let request = try requestClosure()
             
-            session.dataTask(with: request) { data, response, error in
-                self.handleResponse(data, response, error, completion)
-            }.resume()
+            requestProcessor.process(request) { response in
+                let result = Result {
+                    try self.decoder.decode(T.self, from: try response.get())
+                }
+                
+                self.responseDispatcher.dispatch {
+                    completion(result)
+                }
+            }
         } catch {
             completion(.failure(error))
-        }
-    }
-    
-    private func handleResponse<T:Decodable>(_ data: Data?,
-                                             _ response: URLResponse?,
-                                             _ error: Swift.Error?,
-                                             _ completion: @escaping (Result<T, Swift.Error>) -> Void) {
-        guard let data = data else {
-            return finish(completion, with: .failure(Error.unknown))
-        }
-        
-        do {
-            let credentials = try decoder.decode(T.self, from: data)
-            
-            finish(completion, with: .success(credentials))
-        } catch {
-            finish(completion, with: .failure(error))
-        }
-    }
-    
-    private func finish<T>(_ completion: @escaping (Result<T, Swift.Error>) -> Void, with result: Result<T, Swift.Error>) {
-        DispatchQueue.main.async {
-            completion(result)
         }
     }
 }

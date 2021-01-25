@@ -11,17 +11,17 @@ final class TinkoffID: ITinkoffID {
     
     // MARK: - Dependencies
     
-    private let payloadGenerator: IPKCEPayloadGenerator
-    private let appLauncher: IAppLauncher
-    private let callbackUrlParser: ICallbackURLParser
-    private let api: IAPI
+    let payloadGenerator: IPKCEPayloadGenerator
+    let appLauncher: IAppLauncher
+    let callbackUrlParser: ICallbackURLParser
+    let api: IAPI
     
     // MARK: - State
     private var currentProcess: AuthProcess?
     
     // MARK: - Properties
-    private let clientId: String
-    private let callbackUrl: String
+    let clientId: String
+    let callbackUrl: String
     
     init(payloadGenerator: IPKCEPayloadGenerator,
          appLauncher: IAppLauncher,
@@ -44,14 +44,14 @@ final class TinkoffID: ITinkoffID {
     }
     
     public func startTinkoffAuth(_ completion: @escaping SignInCompletion) {
-        let payload = payloadGenerator.generatePayload()
-        let options = AppLaunchOptions(clientId: clientId,
-                                       callbackUrl: callbackUrl,
-                                       payload: payload)
-        let process = AuthProcess(appLaunchOptions: options,
-                                  completion: completion)
-        
         do {
+            let payload = try payloadGenerator.generatePayload()
+            let options = AppLaunchOptions(clientId: clientId,
+                                           callbackUrl: callbackUrl,
+                                           payload: payload)
+            let process = AuthProcess(appLaunchOptions: options,
+                                      completion: completion)
+            
             try appLauncher.launchApp(with: options)
 
             currentProcess = process
@@ -92,12 +92,8 @@ final class TinkoffID: ITinkoffID {
     
     // MARK: - ITinkoffSignOutInitiator
     
-    public func signOut(accessToken: String, completion: @escaping SignOutCompletion) {
-        signOut(with: accessToken, .access, completion)
-    }
-    
-    public func signOut(refreshToken: String, completion: @escaping SignOutCompletion) {
-        signOut(with: refreshToken, .refresh, completion)
+    func signOut(with token: String, tokenTypeHint: SignOutTokenTypeHint, completion: @escaping SignOutCompletion) {
+        signOut(with: token, tokenTypeHint, completion)
     }
     
     // MARK: - Private

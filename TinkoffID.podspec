@@ -12,4 +12,8 @@ Pod::Spec.new do |s|
   s.resource_bundles = {
       'TinkoffIdResources' => ['Development/Resources/**/*.{strings,xcassets}']
   }
+
+  s.test_spec 'Tests' do |test_spec|
+      test_spec.source_files = 'Tests/**/*.{swift}'
+  end
 end

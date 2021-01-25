@@ -11,5 +11,5 @@ import Foundation
 protocol IPKCEPayloadGenerator {
     
     /// Создает и возвращает новый `PKCECodePayload`
-    func generatePayload() -> PKCECodePayload
+    func generatePayload() throws -> PKCECodePayload
 }

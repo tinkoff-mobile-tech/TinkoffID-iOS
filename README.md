@@ -129,8 +129,8 @@ tinkoffId.obtainTokenPayload(using: credentials.refreshToken) { result in
 
 ```swift
 let credentials: TinkoffTokenPayload = ...
-        
-tinkoffId.signOut(accessToken: credentials.accessToken) { result in
+
+tinkoffId.signOut(with: credentials.accessToken, tokenTypeHint: .access, completion: { result in
     do {
         _ = try result.get()
         
@@ -138,7 +138,7 @@ tinkoffId.signOut(accessToken: credentials.accessToken) { result in
     } catch {
         print(error)
     }
-}
+})
 ```
 
 ### Структура TinkoffTokenPayload

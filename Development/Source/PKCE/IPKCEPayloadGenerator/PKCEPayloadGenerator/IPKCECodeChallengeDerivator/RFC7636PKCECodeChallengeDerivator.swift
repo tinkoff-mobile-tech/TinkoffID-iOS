@@ -13,10 +13,13 @@ import CommonCrypto
 final class RFC7636PKCECodeChallengeDerivator: IPKCECodeChallengeDerivator {
     var codeChallengeMethod = "S256"
     
-    func deriveCodeChallenge(using codeVerifier: String) -> String {
+    enum Error: Swift.Error {
+        case serializationError
+    }
+    
+    func deriveCodeChallenge(using codeVerifier: String) throws -> String {
         guard let codeVerifierBytes = codeVerifier.data(using: .ascii) else {
-            assertionFailure("Failed to serialize codeVerifier")
-            return String()
+            throw Error.serializationError
         }
         
         var buffer = [UInt8](repeating: .zero, count: Int(CC_SHA256_DIGEST_LENGTH))

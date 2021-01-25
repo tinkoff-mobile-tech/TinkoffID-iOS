@@ -8,7 +8,7 @@
 import Foundation
 
 /// Набор PKCE параметров в соответствии с  https://tools.ietf.org/html/rfc7636#page-8
-struct PKCECodePayload {
+struct PKCECodePayload: Equatable {
     let verifier: String
     let challenge: String
     let challengeMethod: String
