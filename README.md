@@ -186,6 +186,7 @@ SDK поставляется с примером приложения. Для з
 
 ## Поддержка
 Сообщать об ошибках и запрашивать новый функционал можно в разделе [Issues](https://github.com/tinkoff-mobile-tech/TinkoffID-iOS/issues)
+Почта для обращений - `tinkoff_id@tinkoff.ru`
 
 ## Автор
 Дмитрий Оверчук, d.overchuk@tinkoff.ru
