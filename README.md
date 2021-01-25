@@ -4,7 +4,16 @@
 
 ## Установка
 
-TinkoffID доступен через [CocoaPods](https://cocoapods.org). Для установки просто добавьте следующую строчку в ваш `Podfile`:
+### Swift Package Manager
+`TinkoffID` поддерживает Swift Package Manager. Инструкцию по настройке SPM для вашего проекта можно найти [здесь](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app).
+После настройки проекта просто добавьте ссылку на репозиторий как зависимость:
+
+```
+https://github.com/tinkoff-mobile-tech/TinkoffID-iOS
+```
+
+### Cocoapods
+Для установки `TinkoffID` с помощью [CocoaPods](https://cocoapods.org) необходимо добавить следующую строчку в ваш `Podfile`:
 
 ```ruby
 pod 'TinkoffID'
