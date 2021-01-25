@@ -12,7 +12,7 @@ class RequestBuilderTests: XCTestCase {
     
     private var builder: RequestBuilder!
     
-    private var baseUrl = TinkoffApp.bank.apiBaseUrl
+    private var baseUrl = TinkoffEnvironment.production.apiBaseUrl
 
     override func setUpWithError() throws {
         builder = RequestBuilder(baseUrl: baseUrl)

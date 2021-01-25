@@ -54,13 +54,10 @@ SDK поставляет публичный класс `TinkoffIDBuilder`, сл�
 let clientId = "someClient"
 // URL обратного вызова, необходимый для возврата в приложение
 let callbackUrl = "myapp://authorized"
-// Приложение, с помощью которого будет осуществлена авторизация
-let targetApp = TinkoffApp.bank
 
 // Инициализация фабрики
 let builder = TinkoffIDBuilder(clientId: clientId,
-			       callbackUrl: callbackUrl,
-                               app: targetApp)
+                               callbackUrl: callbackUrl)
 // Получение ITinkoffID
 let tinkoffId = builder.buildSignInEngine()
 ```
@@ -189,6 +186,7 @@ SDK поставляется с примером приложения. Для з
 
 ## Поддержка
 Сообщать об ошибках и запрашивать новый функционал можно в разделе [Issues](https://github.com/tinkoff-mobile-tech/TinkoffID-iOS/issues)
+Почта для обращений - `tinkoff_id@tinkoff.ru`
 
 ## Автор
 Дмитрий Оверчук, d.overchuk@tinkoff.ru

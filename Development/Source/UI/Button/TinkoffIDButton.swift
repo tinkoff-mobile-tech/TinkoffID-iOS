@@ -63,6 +63,7 @@ final class TinkoffIDButton: UIButton {
                                          left: style.contentHorizontalPadding + style.imageRightPadding,
                                          bottom: style.contentVerticalPadding,
                                          right: style.contentHorizontalPadding)
+        setContentHuggingPriority(.required, for: .vertical)
         
         // Appearance
         layer.cornerRadius = style.cornerRadius
