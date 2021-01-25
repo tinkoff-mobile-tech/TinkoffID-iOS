@@ -5,7 +5,7 @@
 //  Created by Dmitry on 18.12.2020.
 //
 
-import Foundation
+import UIKit
 
 /// Стиль кнопки входа
 public enum TinkoffIDButtonStyle {

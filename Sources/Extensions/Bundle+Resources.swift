@@ -6,16 +6,17 @@
 //
 
 import Foundation
+import UIKit
 
 extension Bundle {
     static var resourcesBundle: Bundle? {
-        let bundle = Bundle(for: TinkoffIDButton.self)
-        
-        guard let resourcesBundleUrl = bundle.resourceURL?.appendingPathComponent("TinkoffIdResources.bundle") else {
-            return nil
-        }
-        
-        return Bundle(url: resourcesBundleUrl)
+        #if SWIFT_PACKAGE
+        return Bundle.module
+        #else
+        return Bundle(for: TinkoffIDButton.self)
+            .resourceURL
+            .flatMap(Bundle.init(url:))
+        #endif
     }
     
     func imageNamed(_ name: String) -> UIImage? {

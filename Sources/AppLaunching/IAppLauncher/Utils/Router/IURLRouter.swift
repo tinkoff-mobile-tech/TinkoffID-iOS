@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Роутер URL
 protocol IURLRouter {
