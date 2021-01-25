@@ -8,10 +8,8 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/tinkoff-mobile-tech/TinkoffID.git', :tag => s.version.to_s }
   s.ios.deployment_target = '10.0'
   s.swift_version = '5.0'
-  s.source_files = 'Development/Source/**/*'
-  s.resource_bundles = {
-      'TinkoffIdResources' => ['Development/Resources/**/*.{strings,xcassets}']
-  }
+  s.source_files = 'Sources/**/*.swift'
+  s.resources = 'Sources/**/*.{xcassets,lproj}'
 
   s.test_spec 'Tests' do |test_spec|
       test_spec.source_files = 'Tests/**/*.{swift}'

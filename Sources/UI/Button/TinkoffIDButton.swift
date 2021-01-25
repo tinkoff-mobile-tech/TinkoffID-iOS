@@ -5,7 +5,7 @@
 //  Created by Dmitry on 17.12.2020.
 //
 
-import Foundation
+import UIKit
 
 final class TinkoffIDButton: UIButton {
     
