@@ -8,7 +8,7 @@ lane :release do |options|
 
 	# Checking git
 	ensure_git_status_clean()
-	ensure_git_branch(branch: 'master')
+	ensure_git_branch(branch: "master")
 
 	# Bumping podspec version
 	version = version_bump_podspec(bump_type: bump_type)
