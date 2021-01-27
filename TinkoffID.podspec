@@ -4,14 +4,14 @@ Pod::Spec.new do |s|
   s.version          = '0.0.1'
   s.author           = { 'Дмитрий Оверчук' => 'd.overchuk@tinkoff.ru' }
   s.homepage         = 'https://github.com/tinkoff-mobile-tech/TinkoffID'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.source           = { :git => 'https://github.com/tinkoff-mobile-tech/TinkoffID.git', :tag => s.version.to_s }
+  s.license          = { type: 'MIT', file: 'LICENSE' }
+  s.source           = { git: 'https://github.com/tinkoff-mobile-tech/TinkoffID.git', tag: s.version.to_s }
   s.ios.deployment_target = '10.0'
   s.swift_version = '5.0'
   s.source_files = 'Sources/**/*.swift'
   s.resources = 'Sources/**/*.{xcassets,lproj}'
 
-  s.test_spec 'Tests' do |test_spec|
-      test_spec.source_files = 'Tests/**/*.{swift}'
+  s.test_spec('Tests') do |test_spec|
+    test_spec.source_files = 'Tests/**/*.{swift}'
   end
 end
