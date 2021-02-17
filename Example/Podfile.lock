@@ -1,10 +1,12 @@
 PODS:
   - SnapKit (5.0.1)
   - TinkoffID (0.0.1)
+  - TinkoffID/Tests (0.0.1)
 
 DEPENDENCIES:
   - SnapKit
   - TinkoffID (from `../`)
+  - TinkoffID/Tests (from `../`)
 
 SPEC REPOS:
   trunk:
@@ -16,8 +18,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  TinkoffID: b1643d8091cf030a4e5a63ab7e62ffab46c8beba
+  TinkoffID: ac03552becea632de0f13d9461621770444ae0b8
 
-PODFILE CHECKSUM: a2220c4cb291ec6b50adf28d56fed566606aa646
+PODFILE CHECKSUM: d1e73e199c553c711c8552e3d915b504119d4beb
 
-COCOAPODS: 1.10.0
+COCOAPODS: 1.10.1

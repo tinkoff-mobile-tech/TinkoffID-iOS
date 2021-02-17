@@ -1,0 +1,90 @@
+lane :release do |options|
+  # Checking bump type
+  bump_type = resolve_bump_type(options)
+
+  # Checking that everything is alright
+  checkup
+
+  # Checking git
+  ensure_git_status_clean
+  ensure_git_branch(branch: "master")
+
+  # Bumping podspec version
+  version = version_bump_podspec(bump_type: bump_type)
+
+  # Stamping changelog
+  stamp_changelog(section_identifier: version)
+
+  # Creating release commit and tag
+  git_commit(path: "CHANGELOG.md", message: "Release #{version}")
+  add_git_tag(tag: version)
+
+  # Pushing to remote repo
+  push_to_git_remote(tags: true)
+
+  # Pushing podspec to Cocoapods repo
+  push_podspec
+end
+
+lane :checkup do
+  # Linting ruby files
+  lint_ruby_files
+
+  # Linting podspec
+  lint_podspec
+
+  # Buidling Swift package
+  build_swift_package
+end
+
+lane :build_swift_package do
+  project_name = "TinkoffID.xcodeproj"
+  scheme_name = "TinkoffID-Package"
+  config_file_name = "Config.xcconfig"
+
+  # Creating configuration file
+  sh("echo SWIFT_ACTIVE_COMPILATION_CONDITIONS=''> #{config_file_name}")
+
+  # Generating xcode project
+  sh("swift package generate-xcodeproj --xcconfig-overrides #{config_file_name}")
+
+  # Building generated xcode project
+  sh("xcodebuild clean build -project ../#{project_name} -sdk iphoneos -scheme '#{scheme_name}'")
+
+  # Cleaning up
+  sh("rm -f #{config_file_name}")
+  sh("rm -rf ../#{project_name}")
+end
+
+lane :lint_ruby_files do
+  pod_lib_lint(allow_warnings: true)
+end
+
+lane :lint_fastfile do
+  Dir.chdir("..") do
+    error_callback = lambda do |result|
+      UI.user_error!("rubocop execution failed: #{result}")
+    end
+
+    sh('bundle exec rubocop -c .rubocop.yml', error_callback: error_callback)
+  end
+end
+
+lane :push_podspec do
+  podspec_name = "TinkoffID.podspec"
+
+  pod_push(
+    path: podspec_name,
+    allow_warnings: true,
+    skip_tests: true
+  )
+end
+
+def resolve_bump_type(options)
+  valid_bump_types = ['patch', 'minor', 'major']
+  bump_type = valid_bump_types.include?(options[:type]) ? options[:type] : nil
+
+  UI.abort_with_message!("Bump type is not specified or incorrect! You can use `type: #{valid_bump_types.join('/')}` to specify it.") unless bump_type
+
+  return bump_type
+end
