@@ -28,10 +28,10 @@ end
 
 lane :checkup do
   # Linting ruby files
-  lint_ruby_files
+  lint_fastfile
 
   # Linting podspec
-  lint_podspec
+  pod_lib_lint(allow_warnings: true)
 
   # Buidling Swift package
   build_swift_package
@@ -54,10 +54,6 @@ lane :build_swift_package do
   # Cleaning up
   sh("rm -f #{config_file_name}")
   sh("rm -rf ../#{project_name}")
-end
-
-lane :lint_ruby_files do
-  pod_lib_lint(allow_warnings: true)
 end
 
 lane :lint_fastfile do
