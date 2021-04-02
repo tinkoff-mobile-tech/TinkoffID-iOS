@@ -168,11 +168,35 @@ SDK поставляет фирменную кнопку входа через �
 Для получения экземпляра кнопки необходимо использовать статический метод `build` класса `TinkoffIDButtonBuilder`:
 
 ```swift
-let button: UIControl = TinkoffIDButtonBuilder.build(.default)
+override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    // Создание кнопки входа
+    let button = TinkoffIDButtonBuilder.build(.default)
+    
+    // Добавление обработчика нажатия
+    button.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
+    
+    // Добавление в иерархию
+    view.addSubview(button)
+    
+    // Отступ кнопки от краёв
+    let padding: CGFloat = 16
+    
+    // Расположение кнопки на экране
+    button.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+        button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: padding),
+        button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -padding),
+        button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -padding),
+    ])
+}
 ```
 
 Обратите внимание: после получения кнопки необходимо расположить её на экране, а также добавить обработчик события нажатия. 
 Для верстки рекомендуется использовать `AutoLayout` без указания высоты так как она задается с помощью `intrinsicContentSize`.
+
+Более подробно ознакомиться с правилами размещения кнопки Вы можете [здесь](https://www.figma.com/file/TsgXOeAqFEePVIosk0W7kP/Tinkoff-ID).
 
 ## Пример приложения
 
