@@ -19,6 +19,7 @@
 import Foundation
 import UIKit
 
+@available(*, deprecated, message: "Please use ITinkoffIDFactory abstraction with its implementation TinkoffIDFactory instead instead")
 public final class TinkoffIDBuilder {
     
     private let clientId: String

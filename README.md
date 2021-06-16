@@ -59,7 +59,7 @@ pod 'TinkoffID'
 
 ## Получение ITinkoffID
 
-SDK поставляет публичный класс `TinkoffIDBuilder`, служащий для сборки и предоставления объекта, реализующего `ITinkoffID`. 
+SDK поставляет публичную абстракцию `ITinkoffIDFactory` и публичный класс `TinkoffIDFactory`, реализующий её и служащий для сборки и предоставления объекта, реализующего `ITinkoffID`. 
 
 ```swift
 // Идентификатор приложения
@@ -67,11 +67,11 @@ let clientId = "someClient"
 // URL обратного вызова, необходимый для возврата в приложение
 let callbackUrl = "myapp://authorized"
 
-// Инициализация фабрики
-let builder = TinkoffIDBuilder(clientId: clientId,
+// Инициализация фабрики ITinkoffID
+let factory = TinkoffIDFactory(clientId: clientId,
                                callbackUrl: callbackUrl)
 // Получение ITinkoffID
-let tinkoffId = builder.buildSignInEngine()
+let tinkoffId = factory.build()
 ```
 
 После получения `ITinkoffID`, приложение может начинать авторизацию.
@@ -206,7 +206,7 @@ SDK поставляется с примером приложения. Для з
 
 ### AppDelegate
 
-`AppDelegate` создает `AuthViewController` и устанавливает его в качестве корневого контроллера окна приложения. При запуске приложения создается `TinkoffIDBuilder`, собирающий `ITinkoffID` в методе `applicationDidFinishLaunching` и передающий его в качестве параметров при инициализации `AuthViewController`.
+`AppDelegate` создает `AuthViewController` и устанавливает его в качестве корневого контроллера окна приложения. При запуске приложения создается фабрика `ITinkoffIDFactory`, собирающая `ITinkoffID` в методе `applicationDidFinishLaunching` и передающая его в качестве параметров при инициализации `AuthViewController`.
 
 ⚠️ Обратите внимание! В `AppDelegate.swift` определена структура `Constant`, одним из полей которой является `clientId` типа  `String`. Для тестирования авторизации необходимо заменить её содержимое `client_id`, полученным при регистрации в Tinkoff ID.
 
