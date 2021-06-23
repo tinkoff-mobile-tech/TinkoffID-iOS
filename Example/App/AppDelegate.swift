@@ -24,19 +24,39 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var window = UIWindow(frame: UIScreen.main.bounds) as UIWindow?
     
-    lazy var factory: ITinkoffIDFactory = {
-        assert(!Constant.clientId.isEmpty, "Please specify some `clientId`")
+    let factoryImplementation = TinkoffIDFactoryImplementation.default(
+        /// Идентификатор приложения
+        /// TODO: Указать
+        clientId: "",
+        /// Ссылка обратного вызова, по которой можно вернуться обратно в приложение
+        callbackUrl: "tinkoffauthpartner://"
+    )
+    
+    lazy var tinkoffId: ITinkoffID = {
+        let factory: ITinkoffIDFactory
         
-        return TinkoffIDFactory(clientId: Constant.clientId,
-                                callbackUrl: Constant.callbackUrl,
-                                app: .bank)
+        switch factoryImplementation {
+        case let .default(clientId, callbackUrl):
+            assert(!clientId.isEmpty, "Please specify some `clientId`")
+            
+            factory = TinkoffIDFactory(
+                clientId: clientId,
+                callbackUrl: callbackUrl,
+                app: .bank
+            )
+        case let .debug(configuration):
+            factory = DebugTinkoffIDFactory(configuration: configuration)
+        }
+        
+        return factory.build()
     }()
-    lazy var tinkoffId = factory.build()
     
     func applicationDidFinishLaunching(_ application: UIApplication) {
-        let authController = AuthViewController(signInInitializer: tinkoffId,
-                                                credentialsRefresher: tinkoffId,
-                                                signOutInitializer: tinkoffId)
+        let authController = AuthViewController(
+            signInInitializer: tinkoffId,
+            credentialsRefresher: tinkoffId,
+            signOutInitializer: tinkoffId
+        )
         
         window?.rootViewController = authController
         window?.makeKeyAndVisible()
@@ -49,10 +69,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-struct Constant {
-    /// Идентификатор приложения
-    /// TODO: Указать
-    static let clientId = ""
-    /// Ссылка обратного вызова, по которой можно вернуться обратно в приложение
-    static let callbackUrl = "tinkoffauthpartner://"
+enum TinkoffIDFactoryImplementation {
+    case `default`(clientId: String, callbackUrl: String)
+    case debug(configuration: DebugTinkoffIDFactory.Configuration)
 }
