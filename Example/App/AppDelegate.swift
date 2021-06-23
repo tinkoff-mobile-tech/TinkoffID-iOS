@@ -25,9 +25,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var window = UIWindow(frame: UIScreen.main.bounds) as UIWindow?
     
     lazy var factory: ITinkoffIDFactory = {
-        TinkoffIDFactory(clientId: Constant.clientId,
-                         callbackUrl: Constant.callbackUrl,
-                         app: .bank)
+        assert(!Constant.clientId.isEmpty, "Please specify some `clientId`")
+        
+        return TinkoffIDFactory(clientId: Constant.clientId,
+                                callbackUrl: Constant.callbackUrl,
+                                app: .bank)
     }()
     lazy var tinkoffId = factory.build()
     
