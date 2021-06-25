@@ -19,25 +19,110 @@
 import Foundation
 
 final class DebugTinkoffID: ITinkoffID {
-    var isTinkoffAuthAvailable: Bool
     
-    init(isTinkoffAuthAvailable: Bool) {
-        self.isTinkoffAuthAvailable = isTinkoffAuthAvailable
+    enum Error: Swift.Error {
+        case logoutForbidden
+    }
+    
+    enum DebugAppResult: String {
+        case success
+        case failure
+        case unavailable
+        case cancelled
+    }
+    
+    // Dependencies
+    private let appLauncher: IDebugAppLauncher
+    private let canRefreshTokens: Bool
+    private let canLogout: Bool
+    
+    // State
+    private var completion: SignInCompletion?
+    
+    init(appLauncher: IDebugAppLauncher, canRefreshTokens: Bool, canLogout: Bool) {
+        self.appLauncher = appLauncher
+        self.canRefreshTokens = canRefreshTokens
+        self.canLogout = canLogout
+    }
+    
+    var isTinkoffAuthAvailable: Bool {
+        appLauncher.canLaunchDebugApp
     }
     
     func startTinkoffAuth(_ completion: @escaping SignInCompletion) {
-        // TODO: implement
+        self.completion = completion
+        
+        appLauncher.launchDebugApp()
     }
     
     func handleCallbackUrl(_ url: URL) -> Bool {
-        false // TODO: implement
+        switch resolveDebugAppResult(url) {
+        case .success:
+            finish(with: .success(.stub))
+        case .failure:
+            finish(with: .failure(.failedToObtainToken))
+        case .cancelled:
+            finish(with: .failure(.cancelledByUser))
+        case .unavailable:
+            finish(with: .failure(.unavailable))
+        default:
+            return false
+        }
+        
+        return true
     }
     
     func obtainTokenPayload(using refreshToken: String, _ completion: @escaping (Result<TinkoffTokenPayload, TinkoffAuthError>) -> Void) {
-        // TODO: implement
+        DispatchQueue.main.async {
+            if self.canRefreshTokens {
+                completion(.success(.stub))
+            } else {
+                completion(.failure(.failedToRefreshCredentials))
+            }
+        }
     }
     
     func signOut(with token: String, tokenTypeHint: SignOutTokenTypeHint, completion: @escaping SignOutCompletion) {
-        // TODO: implement
+        DispatchQueue.main.async {
+            if self.canLogout {
+                completion(.success({}()))
+            } else {
+                completion(.failure(Error.logoutForbidden))
+            }
+        }
     }
+    
+    // MARK: - Private
+    
+    private func resolveDebugAppResult(_ url: URL) -> DebugAppResult? {
+        URLComponents(url: url, resolvingAgainstBaseURL: true)?
+            .queryItems?
+            .first(where: { $0.name == .resultItemName })
+            .flatMap { $0.value }
+            .flatMap(DebugAppResult.init(rawValue: ))
+    }
+    
+    private func finish(with result: Result<TinkoffTokenPayload, TinkoffAuthError>) {
+        DispatchQueue.main.async {
+            self.completion?(result)
+            self.completion = nil
+        }
+    }
+}
+
+// MARK: - Private
+
+private extension TinkoffTokenPayload {
+    static var stub: TinkoffTokenPayload {
+        TinkoffTokenPayload(
+            accessToken: UUID().uuidString,
+            refreshToken: UUID().uuidString,
+            idToken: UUID().uuidString,
+            expirationTimeout: TimeInterval(arc4random() % 10)
+        )
+    }
+}
+
+private extension String {
+    static let resultItemName = "result"
 }
