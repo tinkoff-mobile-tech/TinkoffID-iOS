@@ -36,7 +36,6 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>tinkoffbank</string>
-		<string>tinkoffauth</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
