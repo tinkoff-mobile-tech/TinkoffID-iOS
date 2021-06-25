@@ -18,25 +18,34 @@
 
 import Foundation
 
+public struct DebugConfiguration {
+    let canRefreshTokens: Bool
+    let canLogout: Bool
+    
+    public init(canRefreshTokens: Bool, canLogout: Bool) {
+        self.canRefreshTokens = canRefreshTokens
+        self.canLogout = canLogout
+    }
+}
+
 public final class DebugTinkoffIDFactory: ITinkoffIDFactory {
     
-    public struct Configuration {
-        let isTinkoffAuthAvailable: Bool
-        
-        public init(isTinkoffAuthAvailable: Bool) {
-            self.isTinkoffAuthAvailable = isTinkoffAuthAvailable
-        }
-    }
+    private let callbackUrl: String
+    private let configuration: DebugConfiguration
     
-    private let configuration: Configuration
-    
-    public init(configuration: Configuration) {
+    public init(callbackUrl: String, configuration: DebugConfiguration) {
+        self.callbackUrl = callbackUrl
         self.configuration = configuration
     }
     
     public func build() -> ITinkoffID {
-        DebugTinkoffID(
-            isTinkoffAuthAvailable: configuration.isTinkoffAuthAvailable
+        let router = UIApplication.shared
+        let appLauncher = DebugAppLauncher(urlScheme: "tinkoffiddebug://?callbackUrl=\(callbackUrl)", router: router)
+        
+        return DebugTinkoffID(
+            appLauncher: appLauncher,
+            canRefreshTokens: configuration.canRefreshTokens,
+            canLogout: configuration.canLogout
         )
     }
 }
