@@ -17,6 +17,7 @@
 //  limitations under the License.
 
 import Foundation
+import UIKit
 
 /// Реализация фабрики `ITinkoffID` по умолчанию
 public final class TinkoffIDFactory: ITinkoffIDFactory {
