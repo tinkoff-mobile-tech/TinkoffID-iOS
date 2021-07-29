@@ -1,6 +1,8 @@
 # Changelog
 ## [Unreleased]
 
+## [1.1.0] - 2021-07-29
+
 ### Added
 * Добавлена абстрактная фабрика `ITinkoffIDFactory`
 * Добавлен класс `DebugTinkoffIDFactory`, реализующий `ITinkoffIDFactory`
