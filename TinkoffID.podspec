@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = 'TinkoffID'
   s.summary          = 'TinkoffID iOS SDK'
-  s.version          = '1.0.0'
+  s.version          = '1.1.0'
   s.author           = { 'Дмитрий Оверчук' => 'd.overchuk@tinkoff.ru' }
   s.homepage         = 'https://github.com/tinkoff-mobile-tech/TinkoffID'
   s.license          = { type: 'MIT', file: 'LICENSE' }
