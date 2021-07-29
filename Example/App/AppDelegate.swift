@@ -24,29 +24,17 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     lazy var window = UIWindow(frame: UIScreen.main.bounds) as UIWindow?
     
-    let factoryImplementation = TinkoffIDFactoryImplementation.default(
-        /// Идентификатор приложения
-        /// TODO: Указать
-        clientId: "",
-        /// Ссылка обратного вызова, по которой можно вернуться обратно в приложение
-        callbackUrl: "tinkoffauthpartner://"
-    )
     
     lazy var tinkoffId: ITinkoffID = {
-        let factory: ITinkoffIDFactory
+        let clientId = ""
+        let callbackUrl = "tinkoffauthpartner://"
         
-        switch factoryImplementation {
-        case let .default(clientId, callbackUrl):
-            assert(!clientId.isEmpty, "Please specify some `clientId`")
-            
-            factory = TinkoffIDFactory(
-                clientId: clientId,
-                callbackUrl: callbackUrl,
-                app: .bank
-            )
-        case let .debug(configuration):
-            factory = DebugTinkoffIDFactory(configuration: configuration)
-        }
+        assert(!clientId.isEmpty, "Please specify an client ID")
+        
+        let factory = TinkoffIDFactory(
+            clientId: clientId,
+            callbackUrl: callbackUrl
+        )
         
         return factory.build()
     }()
@@ -67,9 +55,4 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         tinkoffId.handleCallbackUrl(url)
     }
-}
-
-enum TinkoffIDFactoryImplementation {
-    case `default`(clientId: String, callbackUrl: String)
-    case debug(configuration: DebugTinkoffIDFactory.Configuration)
 }
