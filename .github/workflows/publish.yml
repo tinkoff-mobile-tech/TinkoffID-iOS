@@ -1,9 +1,13 @@
 name: publish
 
 on:
-  pull_request:
-    branches:
-      - 'master'
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        default: "patch"
+        required: true
+        type: string
+        description: "bump type for version"
 
 jobs:
   publish:
@@ -12,4 +16,6 @@ jobs:
       xcodeproj_path: "TinkoffID.xcodeproj"
       scheme_name: "TinkoffID-Package"
       podspec_name: "TinkoffID.podspec"
-      bump_type: "patch"
+      bump_type: ${{ inputs.bump_type }}
+    secrets:
+      cocapods_trunk_token: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
