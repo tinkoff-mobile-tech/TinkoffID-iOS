@@ -11,4 +11,3 @@ jobs:
     with:
       xcodeproj_path: "TinkoffID.xcodeproj"
       scheme_name: "TinkoffID-Package"
-      podspec_name: "TinkoffID.podspec"
