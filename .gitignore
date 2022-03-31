@@ -6,3 +6,8 @@ fastlane/test_output
 .DS_Store
 TinkoffID Debug/TinkoffID Debug.xcodeproj/xcuserdata
 .build
+
+# AppCode
+.idea
+
+.swiftpm
