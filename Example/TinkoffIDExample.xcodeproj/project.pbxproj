@@ -12,10 +12,13 @@
 		0A65BBBC2590E8F000F613D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A65BBB92590E8F000F613D5 /* LaunchScreen.storyboard */; };
 		0A65BBBD2590E8F000F613D5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A65BBBA2590E8F000F613D5 /* Images.xcassets */; };
 		0ABFC7892590E86000168951 /* TinkoffID.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 0ABFC7882590E85F00168951 /* TinkoffID.podspec */; };
-		51600987FEAC3FA656A81460 /* Pods_TinkoffIDExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F2A6E6CE33587FF27858033 /* Pods_TinkoffIDExample.framework */; };
+		40741E50BFF4B766A19FC37A /* Pods_TinkoffIDExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 035CA265801E31090C779B3B /* Pods_TinkoffIDExample.framework */; };
+		B8B1F7102880026C008EAB8E /* TinkoffButtonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B1F70F2880026C008EAB8E /* TinkoffButtonsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		02D6235BCEC7A72B88084B7A /* Pods-TinkoffIDExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinkoffIDExample.release.xcconfig"; path = "Target Support Files/Pods-TinkoffIDExample/Pods-TinkoffIDExample.release.xcconfig"; sourceTree = "<group>"; };
+		035CA265801E31090C779B3B /* Pods_TinkoffIDExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinkoffIDExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A65BBAE2590E8D300F613D5 /* AuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		0A65BBB12590E8D300F613D5 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A65BBB92590E8F000F613D5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -23,13 +26,10 @@
 		0A65BBBB2590E8F000F613D5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0ABFC7882590E85F00168951 /* TinkoffID.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TinkoffID.podspec; path = ../TinkoffID.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		25F4E23B300426AEB76132F3 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		44F9956D4542D8782CD4C3D8 /* Pods-TinkoffIDExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinkoffIDExample.release.xcconfig"; path = "Target Support Files/Pods-TinkoffIDExample/Pods-TinkoffIDExample.release.xcconfig"; sourceTree = "<group>"; };
+		5C61E8899896A5A3B2571A79 /* Pods-TinkoffIDExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinkoffIDExample.debug.xcconfig"; path = "Target Support Files/Pods-TinkoffIDExample/Pods-TinkoffIDExample.debug.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* TinkoffIDExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinkoffIDExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7F2A6E6CE33587FF27858033 /* Pods_TinkoffIDExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinkoffIDExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		86F49E1AE66946E513814F6E /* Pods-TinkoffIDExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinkoffIDExample.debug.xcconfig"; path = "Target Support Files/Pods-TinkoffIDExample/Pods-TinkoffIDExample.debug.xcconfig"; sourceTree = "<group>"; };
-		93A7498398FBAC5533C5966F /* Pods-TinkoffSignIn_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinkoffSignIn_Example.debug.xcconfig"; path = "Target Support Files/Pods-TinkoffSignIn_Example/Pods-TinkoffSignIn_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		B8B1F70F2880026C008EAB8E /* TinkoffButtonsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinkoffButtonsViewController.swift; sourceTree = "<group>"; };
 		BA3AB1A1BD565FCA6D3E2744 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		E32A0480955749A2CEF75FC4 /* Pods-TinkoffSignIn_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinkoffSignIn_Example.release.xcconfig"; path = "Target Support Files/Pods-TinkoffSignIn_Example/Pods-TinkoffSignIn_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,26 +37,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				51600987FEAC3FA656A81460 /* Pods_TinkoffIDExample.framework in Frameworks */,
+				40741E50BFF4B766A19FC37A /* Pods_TinkoffIDExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		05689BF3C94E278BB77E91B9 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				7F2A6E6CE33587FF27858033 /* Pods_TinkoffIDExample.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		0A65BBAD2590E8D300F613D5 /* App */ = {
 			isa = PBXGroup;
 			children = (
 				0A65BBB12590E8D300F613D5 /* AppDelegate.swift */,
 				0A65BBAE2590E8D300F613D5 /* AuthViewController.swift */,
+				B8B1F70F2880026C008EAB8E /* TinkoffButtonsViewController.swift */,
 				0A65BBB82590E8F000F613D5 /* Resources */,
 			);
 			path = App;
@@ -72,6 +65,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		4EAEDD680A06A0C99D9474AF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				035CA265801E31090C779B3B /* Pods_TinkoffIDExample.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
@@ -79,7 +80,7 @@
 				0A65BBAD2590E8D300F613D5 /* App */,
 				607FACD11AFB9204008FA782 /* Products */,
 				D4A376ECE1B32FFCA6022572 /* Pods */,
-				05689BF3C94E278BB77E91B9 /* Frameworks */,
+				4EAEDD680A06A0C99D9474AF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -104,10 +105,8 @@
 		D4A376ECE1B32FFCA6022572 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				93A7498398FBAC5533C5966F /* Pods-TinkoffSignIn_Example.debug.xcconfig */,
-				E32A0480955749A2CEF75FC4 /* Pods-TinkoffSignIn_Example.release.xcconfig */,
-				86F49E1AE66946E513814F6E /* Pods-TinkoffIDExample.debug.xcconfig */,
-				44F9956D4542D8782CD4C3D8 /* Pods-TinkoffIDExample.release.xcconfig */,
+				5C61E8899896A5A3B2571A79 /* Pods-TinkoffIDExample.debug.xcconfig */,
+				02D6235BCEC7A72B88084B7A /* Pods-TinkoffIDExample.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -119,11 +118,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "TinkoffIDExample" */;
 			buildPhases = (
-				37CFEEDB18E1B7B1ED595B67 /* [CP] Check Pods Manifest.lock */,
+				4AAE7DBEBDBA13C7FC4C7236 /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				7C076F48CF4E01832D45CFB4 /* [CP] Embed Pods Frameworks */,
+				82A91C430F311D4F3A9538D0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -183,7 +182,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		37CFEEDB18E1B7B1ED595B67 /* [CP] Check Pods Manifest.lock */ = {
+		4AAE7DBEBDBA13C7FC4C7236 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -205,7 +204,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7C076F48CF4E01832D45CFB4 /* [CP] Embed Pods Frameworks */ = {
+		82A91C430F311D4F3A9538D0 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -231,6 +230,7 @@
 			files = (
 				0A65BBB62590E8D300F613D5 /* AppDelegate.swift in Sources */,
 				0A65BBB32590E8D300F613D5 /* AuthViewController.swift in Sources */,
+				B8B1F7102880026C008EAB8E /* TinkoffButtonsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,7 +345,7 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 86F49E1AE66946E513814F6E /* Pods-TinkoffIDExample.debug.xcconfig */;
+			baseConfigurationReference = 5C61E8899896A5A3B2571A79 /* Pods-TinkoffIDExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -370,7 +370,7 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 44F9956D4542D8782CD4C3D8 /* Pods-TinkoffIDExample.release.xcconfig */;
+			baseConfigurationReference = 02D6235BCEC7A72B88084B7A /* Pods-TinkoffIDExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

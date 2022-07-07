@@ -45,8 +45,20 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             credentialsRefresher: tinkoffId,
             signOutInitializer: tinkoffId
         )
-        
-        window?.rootViewController = authController
+        authController.tabBarItem = UITabBarItem(title: "Auth", image: nil, tag: 0)
+
+        let tinkoffButtonsController = TinkoffButtonsViewController()
+        tinkoffButtonsController.tabBarItem = UITabBarItem(title: "UI", image: nil, tag: 1)
+
+        let tabBarController = UITabBarController()
+
+        if #available(iOS 13.0, *) {
+            authController.tabBarItem.image = UIImage(systemName: "person")
+            tinkoffButtonsController.tabBarItem.image =  UIImage(systemName: "pencil")
+        }
+        tabBarController.viewControllers = [authController, tinkoffButtonsController]
+
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
     }
     

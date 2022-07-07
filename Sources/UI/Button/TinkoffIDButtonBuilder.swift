@@ -18,21 +18,79 @@
 
 import UIKit
 
-/// Стиль кнопки входа
-public enum TinkoffIDButtonStyle {
-    /// Стандартная желтая кнопка высотой 56 точек
+/// Конфигурация кнопки
+public struct TinkoffIDButtonConfiguration {
+    /// Стиль кнопки
+    let colorStyle: TinkoffIDButtonColorStyle
+    /// Размер
+    let size: TinkoffIDButtonSize
+    /// Радиус скругления
+    let cornerRadius: CGFloat
+    /// Шрифт
+    let font: UIFont
+
+    public init(
+        colorStyle: TinkoffIDButtonColorStyle = .default,
+        size: TinkoffIDButtonSize = .medium,
+        cornerRadius: CGFloat = 8,
+        font: UIFont = UIFont.systemFont(ofSize: 15)
+    ) {
+        self.colorStyle = colorStyle
+        self.size = size
+        self.cornerRadius = cornerRadius
+        self.font = font
+    }
+}
+
+/// Размер кнопки входа
+public enum TinkoffIDButtonSize {
+    /// Размер от 30 до 40, по дефолту 30
+    case small
+    /// Размер от 40 до 60, по дефолту 40
+    case medium
+    /// Размер от 60, по дефолту 60
+    case large
+
+    init(height: CGFloat) {
+        if height < 40 {
+            self = .small
+        } else if height < 60 {
+            self = .medium
+        } else {
+            self = .large
+        }
+    }
+}
+
+/// Цветовой стиль кнопки входа
+public enum TinkoffIDButtonColorStyle {
+    /// Стандартная желтая тема
     case `default`
-    /// Желтая кнопка высотой 40 точек
-    case compact
+    /// Светлая тема
+    case alternativeLight
+    /// Темная тема
+    case alternativeDark
 }
 
 /// Сборщик кнопки входа через Тинькофф
 public final class TinkoffIDButtonBuilder {
     
-    /// Создает кнопку входа через Тинькофф
-    /// - Parameter style: Стиль кнопки
+    /// Создает прямоугольную кнопку входа через Тинькофф
+    /// - Parameter configuration: Конфигурация кнопки
+    /// - Parameter title: Текст кнопки
+    /// - Parameter badge: Дополнительный текст на бейдже
     /// - Returns: Контрол кнопки
-    public static func build(_ style: TinkoffIDButtonStyle) -> UIControl {
-        TinkoffIDButton(style)
+    public static func build(
+        configuration: TinkoffIDButtonConfiguration = TinkoffIDButtonConfiguration(),
+        title: String? = nil,
+        badge: String? = nil
+    ) -> UIControl {
+        TinkoffIDButton(configuration: configuration, title: title, badge: badge)
+    }
+    /// Создает круглую кнопку входа через Тинькофф
+    /// - Parameter colorStyle: Цветовая тема кнопки
+    /// - Returns: Контрол кнопки
+    public static func buildCompact(colorStyle: TinkoffIDButtonColorStyle = .default) -> UIControl {
+        TinkoffIDCompactButton(colorStyle: colorStyle)
     }
 }
