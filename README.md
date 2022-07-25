@@ -198,15 +198,15 @@ tinkoffId.signOut(with: credentials.accessToken, tokenTypeHint: .access, complet
 При получении `TinkoffTokenPayload` и наличии у него поля `refreshToken` имеет смысл сохранить значение этого поля чтобы иметь возможность запросить новый `accessToken`, когда прежний станет неактивным. Рекомендуемый способ хранения токена - [Keychain Services](https://developer.apple.com/documentation/security/keychain_services)
 
 ## UI
-SDK поставляет фирменную кнопку входа через Тинькофф. Кнопка представлена в двух стилях: `.default` (высотой 56 точек) и `.compact` (40 точек).
-Для получения экземпляра кнопки необходимо использовать статический метод `build` класса `TinkoffIDButtonBuilder`:
-
+SDK поставляет два варианта фирменных кнопок входа через Тинькофф. 
+Первый вариант - стандартная прямоугольная кнопка с текстом, с возможностью задать текст, радиус скругления и шрифт. Так же можно выбрать один из трех вариантов цветового стиля и размера. Есть возможность добавить дополнительный текст для привлечения клиентов.
+Второй вариант - компактная кнопка без текста, так же можно выбрать один из трех цветовых стилей. 
 ```swift
 override func viewDidLoad() {
     super.viewDidLoad()
     
-    // Создание кнопки входа
-    let button = TinkoffIDButtonBuilder.build(.default)
+    // Создание стандартной кнопки
+    let button = TinkoffIDButtonBuilder.build()
     
     // Добавление обработчика нажатия
     button.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
@@ -230,7 +230,7 @@ override func viewDidLoad() {
 Обратите внимание: после получения кнопки необходимо расположить её на экране, а также добавить обработчик события нажатия. 
 Для верстки рекомендуется использовать `AutoLayout` без указания высоты так как она задается с помощью `intrinsicContentSize`.
 
-Более подробно ознакомиться с правилами размещения кнопки Вы можете [здесь](https://www.figma.com/file/TsgXOeAqFEePVIosk0W7kP/Tinkoff-ID).
+Более подробно ознакомиться с правилами размещения кнопки Вы можете [здесь](https://www.figma.com/file/Yj3o7yQotahvBxfIKhBmJc/Tinkoff-ID-guide).
 
 ## Отладка без приложения Тинькофф
 В случаях когда необходима отладка интеграции `Tinkoff ID` без приложения Тинькофф или на симуляторе iOS, SDK предоставляет реализацию TinkoffID для отладки.
