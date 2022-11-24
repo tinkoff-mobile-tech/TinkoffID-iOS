@@ -35,14 +35,14 @@ final class MockedURLRouter: IURLRouter {
         
         return nextCanOpenUrlResult
     }
-    
-    func open(_ url: URL) -> Bool {
+
+    func open(_ url: URL, isUniversalLink: Bool) -> Bool {
         lastOpenedURL = url
-        
+
         defer {
             nextOpenResult = nil
         }
-        
+
         return nextOpenResult
     }
 }

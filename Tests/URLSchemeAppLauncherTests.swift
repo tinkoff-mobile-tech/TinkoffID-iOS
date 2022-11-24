@@ -31,6 +31,7 @@ class URLSchemeAppLauncherTests: XCTestCase {
         router = MockedURLRouter()
         
         launcher = URLSchemeAppLauncher(appUrlScheme: appUrlScheme,
+                                        isAppUrlUniversalLink: false,
                                         builder: schemeBuilder,
                                         router: router)
     }

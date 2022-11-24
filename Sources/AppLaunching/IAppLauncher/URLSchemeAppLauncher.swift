@@ -19,30 +19,37 @@
 import Foundation
 
 final class URLSchemeAppLauncher: IAppLauncher {
-    
+
     enum Error: Swift.Error {
         case launchFailure
     }
-    
+
     let builder: IURLSchemeBuilder
     let appUrlScheme: String
+    let isAppUrlUniversalLink: Bool
     let router: IURLRouter
-    
-    init(appUrlScheme: String, builder: IURLSchemeBuilder, router: IURLRouter) {
+
+    init(
+        appUrlScheme: String,
+        isAppUrlUniversalLink: Bool,
+        builder: IURLSchemeBuilder,
+        router: IURLRouter
+    ) {
         self.builder = builder
         self.appUrlScheme = appUrlScheme
+        self.isAppUrlUniversalLink = isAppUrlUniversalLink
         self.router = router
     }
-    
+
     var canLaunchApp: Bool {
         URL(string: appUrlScheme)
             .map(router.canOpenURL) ?? false
     }
-    
+
     func launchApp(with options: AppLaunchOptions) throws {
         let appUrl = try builder.buildUrlScheme(with: options)
-        
-        if !router.open(appUrl) {
+
+        if !router.open(appUrl, isUniversalLink: isAppUrlUniversalLink) {
             // Не удалось запустить приложение
             throw Error.launchFailure
         }

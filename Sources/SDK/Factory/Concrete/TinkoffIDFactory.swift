@@ -76,6 +76,7 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
         let urlSchemeBuilder = URLSchemeBuilder(baseUrlString: appConfiguration.authUrl)
         let appLauncher = URLSchemeAppLauncher(
             appUrlScheme: appConfiguration.urlScheme,
+            isAppUrlUniversalLink: appConfiguration.isAuthUrlUniversalLink,
             builder: urlSchemeBuilder,
             router: UIApplication.shared
         )

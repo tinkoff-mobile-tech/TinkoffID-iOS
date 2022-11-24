@@ -23,17 +23,21 @@ import UIKit
 protocol IURLRouter {
     /// Возвращает `true` если заданный URL может быть открыт
     func canOpenURL(_ url: URL) -> Bool
-    
+
     /// Открывает заданный URL и возвращает `true` если открытие удалось
-    func open(_ url: URL) -> Bool
+    ///
+    /// - Parameters:
+    ///    - url: URL для открытия
+    ///    - isUniversalLink: Флаг, обозначающий, что ссылка является universal link и должна открываться только внутри приложения.
+    func open(_ url: URL, isUniversalLink: Bool) -> Bool
 }
 
 extension UIApplication: IURLRouter {
-    func open(_ url: URL) -> Bool {
+    func open(_ url: URL, isUniversalLink: Bool) -> Bool {
         guard canOpenURL(url) else { return false }
-        
-        open(url, options: [:], completionHandler: nil)
-        
+
+        open(url, options: [.universalLinksOnly: isUniversalLink], completionHandler: nil)
+
         return true
     }
 }

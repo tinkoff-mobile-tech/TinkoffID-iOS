@@ -32,4 +32,11 @@ extension TinkoffApp: TargetAppConfiguration {
             return "https://tinkoff.ru/partner_auth"
         }
     }
+
+    public var isAuthUrlUniversalLink: Bool {
+        switch self {
+        case .bank:
+            return true
+        }
+    }
 }

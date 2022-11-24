@@ -25,6 +25,6 @@ final class DebugAppLauncher: IDebugAppLauncher {
     }
     
     func launchDebugApp() {
-        _ = debugAppUrl.map(router.open(_:))
+        _ = debugAppUrl.map { router.open($0, isUniversalLink: false) }
     }
 }

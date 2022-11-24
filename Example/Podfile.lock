@@ -1,7 +1,7 @@
 PODS:
   - SnapKit (5.0.1)
-  - TinkoffID (1.1.0)
-  - TinkoffID/Tests (1.1.0)
+  - TinkoffID (1.2.0)
+  - TinkoffID/Tests (1.2.0)
 
 DEPENDENCIES:
   - SnapKit
@@ -18,7 +18,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  TinkoffID: 5f8c16ed1ec6ab3c055d76b162d5770a324ad3db
+  TinkoffID: 65defd4b4ceabbd8a6c00563d90204c9e60fd75a
 
 PODFILE CHECKSUM: ebbf3aa204a2c47033aee78dc783acf8bc5423bd
 
