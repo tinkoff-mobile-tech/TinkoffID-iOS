@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
   s.swift_version = '5.0'
   s.source_files = 'Sources/**/*.swift'
   s.resources = 'Sources/**/*.{xcassets,lproj}'
+  s.dependency 'TCSSSLPinningPublic', '~> 4.0'
 
   s.test_spec('Tests') do |test_spec|
     test_spec.source_files = 'Tests/**/*.{swift}'

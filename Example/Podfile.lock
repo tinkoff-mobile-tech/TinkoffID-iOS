@@ -1,7 +1,12 @@
 PODS:
   - SnapKit (5.0.1)
-  - TinkoffID (1.1.0)
-  - TinkoffID/Tests (1.1.0)
+  - TCSSSLPinningPublic (4.0.0):
+    - TrustKit (= 1.6.3)
+  - TinkoffID (1.2.0):
+    - TCSSSLPinningPublic (~> 4.0)
+  - TinkoffID/Tests (1.2.0):
+    - TCSSSLPinningPublic (~> 4.0)
+  - TrustKit (1.6.3)
 
 DEPENDENCIES:
   - SnapKit
@@ -9,6 +14,9 @@ DEPENDENCIES:
   - TinkoffID/Tests (from `../`)
 
 SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - TCSSSLPinningPublic
+    - TrustKit
   trunk:
     - SnapKit
 
@@ -18,8 +26,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
-  TinkoffID: 5f8c16ed1ec6ab3c055d76b162d5770a324ad3db
+  TCSSSLPinningPublic: 7d8aed728c4a1ff66feb2323f686a389b868f1e5
+  TinkoffID: 0f04b75ca1e42482adf8e0843375a680cbe55962
+  TrustKit: a2f0c3a926f0a3ce3c082db9a39f1f540dbb04cb
 
-PODFILE CHECKSUM: ebbf3aa204a2c47033aee78dc783acf8bc5423bd
+PODFILE CHECKSUM: afca0ae77c379b2ea123dd308359330458e3b198
 
 COCOAPODS: 1.10.1
