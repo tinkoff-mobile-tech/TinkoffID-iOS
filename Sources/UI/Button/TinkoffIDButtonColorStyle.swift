@@ -5,7 +5,7 @@
 //  Created by Margarita Shishkina on 13.07.2022.
 //
 
-import Foundation
+import UIKit
 
 extension TinkoffIDButtonColorStyle {
     /// Возвращает цвет фона для соответствующего состояния
