@@ -65,6 +65,8 @@ final class TinkoffID: ITinkoffID {
                                            payload: payload)
             let process = AuthProcess(appLaunchOptions: options,
                                       completion: completion)
+            pinningDelegate.configure()
+            
             try appLauncher.launchApp(with: options)
 
             currentProcess = process
