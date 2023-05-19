@@ -12,21 +12,17 @@ protocol IPinningDelegate {}
 
 final class PinningDelegate: NSObject, IPinningDelegate {
     
+    // MARK: - Dependencies
+    
+    private var httpPublicKeyPinningService: IHTTPPublicKeyPinningService
+    
     // MARK: - Lifestyle
     
     override init() {
-        super.init()
-        self.httpPublicKeyPinningService.configure()
-        self.httpPublicKeyPinningService.updateHostsAndPins()
-    }
-    
-    // MARK: - Dependencies
-    
-    private var httpPublicKeyPinningService: IHTTPPublicKeyPinningService {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         let bundleID = Bundle.main.bundleIdentifier?.description ?? "ru.tinkoff.id"
         let configuration = HPKPServiceConfiguration(
-            hostAndPinsURL: HPKPServiceConstants.Configuration.productionHostAndPinsURL,
+            hostAndPinsURL: HPKPServiceConstants.Configuration.debugHostAndPinsURL,
             untrustedConnectionPolicy: .continue,
             cachedHostsAndPinsDefaultsKey: "\(bundleID).hostsandpins",
             appParameters: AppParameters(
@@ -34,8 +30,12 @@ final class PinningDelegate: NSObject, IPinningDelegate {
                 origin: "origin"
             )
         )
-        let hpkpService = HPKPServiceAssembly.createHPKPPinningService(with: configuration)
-        return hpkpService
+        self.httpPublicKeyPinningService = HPKPServiceAssembly.createHPKPPinningService(with: configuration)
+        
+        self.httpPublicKeyPinningService.updateHostsAndPins()
+        self.httpPublicKeyPinningService.configure()
+        
+        super.init()
     }
 }
 
