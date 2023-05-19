@@ -32,8 +32,8 @@ final class PinningDelegate: NSObject, IPinningDelegate {
         )
         self.httpPublicKeyPinningService = HPKPServiceAssembly.createHPKPPinningService(with: configuration)
         
-        self.httpPublicKeyPinningService.updateHostsAndPins()
         self.httpPublicKeyPinningService.configure()
+        self.httpPublicKeyPinningService.updateHostsAndPins()
         
         super.init()
     }
