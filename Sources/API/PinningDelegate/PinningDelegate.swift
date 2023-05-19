@@ -8,11 +8,17 @@
 import Foundation
 import TCSSSLPinning
 
-protocol IPinningDelegate {
-    func configure()
-}
+protocol IPinningDelegate {}
 
 final class PinningDelegate: NSObject, IPinningDelegate {
+    
+    // MARK: - Lifestyle
+    
+    override init() {
+        super.init()
+        self.httpPublicKeyPinningService.updateHostsAndPins()
+        self.httpPublicKeyPinningService.configure()
+    }
     
     // MARK: - Dependencies
     
@@ -30,14 +36,6 @@ final class PinningDelegate: NSObject, IPinningDelegate {
         )
         let hpkpService = HPKPServiceAssembly.createHPKPPinningService(with: configuration)
         return hpkpService
-    }
-    
-    // MARK: - IPinningDelegate
-    
-    func configure() {
-        httpPublicKeyPinningService.configure()
-        // TODO: Check how to call from AppDelegate?
-        httpPublicKeyPinningService.updateHostsAndPins()
     }
 }
 
