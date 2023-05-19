@@ -16,8 +16,8 @@ final class PinningDelegate: NSObject, IPinningDelegate {
     
     override init() {
         super.init()
-        self.httpPublicKeyPinningService.updateHostsAndPins()
         self.httpPublicKeyPinningService.configure()
+        self.httpPublicKeyPinningService.updateHostsAndPins()
     }
     
     // MARK: - Dependencies
