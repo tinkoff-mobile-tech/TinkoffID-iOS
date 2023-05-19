@@ -74,16 +74,49 @@ pod 'TinkoffID'
     <false/>
     <key>NSExceptionDomains</key>
     <dict>
-        <key>certs.tinkoff.ru</key>
+        <key>acdn.tinkoff.ru</key>
         <dict>
             <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+        </dict>
+        <key>cdn-tinkoff.ru</key>
+        <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
             <true/>
         </dict>
         <key>certs-qa.tcsbank.ru</key>
         <dict>
             <key>NSExceptionAllowsInsecureHTTPLoads</key>
             <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
         </dict>
+        <key>certs.tinkoff.ru</key>
+        <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+        </dict>
+        <key>tcsbank.ru</key>
+        <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+        </dict>
+        <key>tinkoff.ru</key>
+        <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+        </dict>
+        
     </dict>
 </dict>
 ```
