@@ -18,18 +18,13 @@ final class PinningDelegate: NSObject, IPinningDelegate {
     
     // MARK: - Lifestyle
     
-    override init() {
+    init(hostAndPinsURL: String?) {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         let bundleID = Bundle.main.bundleIdentifier?.description ?? "ru.tinkoff.id"
-        let configuration = HPKPServiceConfiguration(
-            hostAndPinsURL: HPKPServiceConstants.Configuration.debugHostAndPinsURL,
-            untrustedConnectionPolicy: .continue,
-            cachedHostsAndPinsDefaultsKey: "\(bundleID).hostsandpins",
-            appParameters: AppParameters(
-                version: version ?? "1.0",
-                origin: "origin"
-            )
-        )
+        let configuration = HPKPServiceConfiguration(hostAndPinsURL: URL(string: hostAndPinsURL ?? "") ?? HPKPServiceConstants.Configuration.productionHostAndPinsURL,
+                                                     untrustedConnectionPolicy: .continue,
+                                                     cachedHostsAndPinsDefaultsKey: "\(bundleID).hostsandpins",
+                                                     appParameters: AppParameters(version: version ?? "1.0", origin: "origin"))
         self.httpPublicKeyPinningService = HPKPServiceAssembly.createHPKPPinningService(with: configuration)
         
         self.httpPublicKeyPinningService.configure()

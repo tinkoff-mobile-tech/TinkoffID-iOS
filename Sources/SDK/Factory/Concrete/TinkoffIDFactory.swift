@@ -80,7 +80,7 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
             router: UIApplication.shared
         )
         
-        let pinningDelegate = PinningDelegate()
+        let pinningDelegate = PinningDelegate(hostAndPinsURL: environmentConfiguration.hostAndPinsUrl)
         let urlSession = URLSession(configuration: URLSessionConfiguration.default,
                                     delegate: pinningDelegate,
                                     delegateQueue: nil)
