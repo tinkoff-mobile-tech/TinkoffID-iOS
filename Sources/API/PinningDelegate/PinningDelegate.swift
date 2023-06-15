@@ -22,7 +22,7 @@ final class PinningDelegate: NSObject, IPinningDelegate {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         let bundleID = Bundle.main.bundleIdentifier?.description ?? "ru.tinkoff.id"
         let configuration = HPKPServiceConfiguration(hostAndPinsURL: URL(string: hostAndPinsURL ?? "") ?? HPKPServiceConstants.Configuration.productionHostAndPinsURL,
-                                                     untrustedConnectionPolicy: .continue,
+                                                     untrustedConnectionPolicy: .break,
                                                      cachedHostsAndPinsDefaultsKey: "\(bundleID).hostsandpins",
                                                      appParameters: AppParameters(version: version ?? "1.0", origin: "origin"))
         self.httpPublicKeyPinningService = HPKPServiceAssembly.createHPKPPinningService(with: configuration)
