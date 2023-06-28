@@ -27,6 +27,7 @@ final class URLSchemeAppLauncher: IAppLauncher {
     let builder: IURLSchemeBuilder
     let appUrlScheme: String
     let router: IURLRouter
+//    let webViewBuilder: IAuthWebViewBuilder
     
     init(appUrlScheme: String, builder: IURLSchemeBuilder, router: IURLRouter) {
         self.builder = builder
@@ -42,9 +43,39 @@ final class URLSchemeAppLauncher: IAppLauncher {
     func launchApp(with options: AppLaunchOptions) throws {
         let appUrl = try builder.buildUrlScheme(with: options)
         
-        if !router.open(appUrl) {
-            // Не удалось запустить приложение
-            throw Error.launchFailure
+        // add new logic somehow
+        router.openWithFallback(appUrl) { didOpen in
+            if !didOpen {
+                self.openWebView(options: options)
+            }
         }
+        
+//        if !router.open(appUrl) {
+//            // Не удалось запустить приложение
+//            throw Error.launchFailure
+//        }
+    }
+    
+    func openWebView(options: AppLaunchOptions) {
+        let webVC = AuthWebViewController(options: options)
+        UIApplication.getTopViewController()?.present(webVC, animated: true)
+    }
+}
+
+
+extension UIApplication {
+
+    class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+
+        if let nav = base as? UINavigationController {
+            return getTopViewController(base: nav.visibleViewController)
+
+        } else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
+            return getTopViewController(base: selected)
+
+        } else if let presented = base?.presentedViewController {
+            return getTopViewController(base: presented)
+        }
+        return base
     }
 }

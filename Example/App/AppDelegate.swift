@@ -26,7 +26,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     lazy var tinkoffId: ITinkoffID = {
-        let clientId = ""
+        let clientId = "test-partner-mobile"
         let callbackUrl = "tinkoffauthpartner://"
         
         assert(!clientId.isEmpty, "Please specify an client ID")
@@ -65,6 +65,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        tinkoffId.handleCallbackUrl(url)
+        print("=== application open \(url)")
+        return tinkoffId.handleCallbackUrl(url)
     }
 }
