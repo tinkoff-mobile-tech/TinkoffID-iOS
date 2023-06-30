@@ -27,6 +27,7 @@ final class TinkoffID: ITinkoffID {
     let callbackUrlParser: ICallbackURLParser
     let api: IAPI
     let pinningDelegate: IPinningDelegate
+    let authWebViewBuilder: IAuthWebViewBuilder
     
     // MARK: - State
     private var currentProcess: AuthProcess?
@@ -40,6 +41,7 @@ final class TinkoffID: ITinkoffID {
          callbackUrlParser: ICallbackURLParser,
          api: IAPI,
          pinningDelegate: IPinningDelegate,
+         authWebViewBuilder: IAuthWebViewBuilder,
          clientId: String,
          callbackUrl: String) {
         self.payloadGenerator = payloadGenerator
@@ -47,6 +49,7 @@ final class TinkoffID: ITinkoffID {
         self.callbackUrlParser = callbackUrlParser
         self.api = api
         self.pinningDelegate = pinningDelegate
+        self.authWebViewBuilder = authWebViewBuilder
         self.clientId = clientId
         self.callbackUrl = callbackUrl
     }
@@ -66,12 +69,23 @@ final class TinkoffID: ITinkoffID {
             let process = AuthProcess(appLaunchOptions: options,
                                       completion: completion)
             
-            try appLauncher.launchApp(with: options)
+            try appLauncher.launchApp(with: options, completion: { [weak self] didLaunchMobileApp in
+                if !didLaunchMobileApp {
+                    self?.openWebView(options: options)
+                }
+            })
 
             currentProcess = process
         } catch {
             completion(.failure(.failedToLaunchApp))
         }
+    }
+    
+    
+    func openWebView(options: AppLaunchOptions) {
+        let authWebView = authWebViewBuilder.build(with: options)
+        authWebView.delegate = self
+        authWebView.open()
     }
     
     // MARK: - ITinkoffAuthCallbackHandler
@@ -132,6 +146,15 @@ final class TinkoffID: ITinkoffID {
     private func signOut(with token: String, _ tokenTypeHint: SignOutTokenTypeHint, _ completion: @escaping SignOutCompletion) {
         api.signOut(with: token, tokenTypeHint: tokenTypeHint, clientId: clientId) { result in
             completion(result.map { _ in {}() })
+        }
+    }
+}
+
+extension TinkoffID: IAuthWebViewDelegate {
+    func authWebView(_ webView: AuthWebView, didOpen url: URL) {
+        let handled = handleCallbackUrl(url)
+        if handled {
+            webView.dismiss(animated: true)
         }
     }
 }

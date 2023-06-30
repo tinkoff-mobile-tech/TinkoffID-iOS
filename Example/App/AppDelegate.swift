@@ -65,7 +65,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        print("=== application open \(url)")
         return tinkoffId.handleCallbackUrl(url)
     }
 }
