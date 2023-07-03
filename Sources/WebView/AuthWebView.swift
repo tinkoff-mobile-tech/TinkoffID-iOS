@@ -34,13 +34,39 @@ final class AuthWebView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        webView.frame = UIScreen.main.bounds
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Закрыть",
+                                                           style: .plain,
+                                                           target: self,
+                                                           action: #selector(closeButtonClicked))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Bundle.resourcesBundle?
+            .imageNamed("reload"),
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(reloadButtonClicked))
+        
         view.addSubview(webView)
         webView.navigationDelegate = self
         
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.topAnchor.constraint(equalTo: view.topAnchor, constant: 44).isActive = true
+        webView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        webView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        webView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        
+        
+        // TODO: Почему прозрачный?
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = UIColor.systemBackground
+        } else {
+            view.backgroundColor = .white
+        }
+        
+        loadWebView()
+    }
+    
+    func loadWebView() {
         do {
             let url = try buildWebViewURL(with: options)
-            print(url)
             let request = URLRequest(url: url)
             webView.load(request)
         } catch {
@@ -76,16 +102,29 @@ final class AuthWebView: UIViewController {
     }
     
     func open() {
-        DispatchQueue.main.async {
-            UIApplication.getTopViewController()?.present(self, animated: true)
-        }
+        let navigationController = UINavigationController(rootViewController: self)
+        UIApplication.getTopViewController()?.present(navigationController, animated: true)
+        
+    }
+    
+    @objc func closeButtonClicked() {
+        dismiss(animated: true)
+    }
+    
+    @objc func reloadButtonClicked() {
+        loadWebView()
     }
 }
 
 extension AuthWebView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        decisionHandler(.allow)
         guard let url = navigationAction.request.url else { return }
+        
+        if url.absoluteString == "https://www.tinkoff.ru/" {
+            decisionHandler(.cancel)
+            return
+        }
+        decisionHandler(.allow)
         delegate?.authWebView(self, didOpen: url)
     }
 }
