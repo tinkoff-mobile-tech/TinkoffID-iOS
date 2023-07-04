@@ -26,7 +26,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     lazy var tinkoffId: ITinkoffID = {
-        let clientId = "test-partner-mobile"
+        let clientId = ""
         let callbackUrl = "tinkoffauthpartner://"
         
         assert(!clientId.isEmpty, "Please specify an client ID")
