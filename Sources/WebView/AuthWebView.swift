@@ -48,13 +48,11 @@ final class AuthWebView: UIViewController {
         webView.navigationDelegate = self
         
         webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.topAnchor.constraint(equalTo: view.topAnchor, constant: 44).isActive = true
+        webView.topAnchor.constraint(equalTo: view.topAnchor, constant: navigationController?.navigationBar.frame.size.height ?? 44).isActive = true
         webView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
         webView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
         webView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
         
-        
-        // TODO: Почему прозрачный?
         if #available(iOS 13.0, *) {
             view.backgroundColor = UIColor.systemBackground
         } else {
@@ -64,17 +62,27 @@ final class AuthWebView: UIViewController {
         loadWebView()
     }
     
-    func loadWebView() {
+    func open() {
+        let navigationController = UINavigationController(rootViewController: self)
+        UIApplication.getTopViewController()?.present(navigationController, animated: true)
+        
+    }
+    
+    // MARK: - Private
+    
+    private func loadWebView() {
         do {
             let url = try buildWebViewURL(with: options)
             let request = URLRequest(url: url)
-            webView.load(request)
+            DispatchQueue.main.async {
+                self.webView.load(request)
+            }
         } catch {
             fatalError("Invalid URL provided to WebView")
         }
     }
     
-    func buildWebViewURL(with options: AppLaunchOptions) throws -> URL {
+    private func buildWebViewURL(with options: AppLaunchOptions) throws -> URL {
         let params = [
             "client_id": options.clientId,
             "code_verifier": options.payload.verifier,
@@ -101,20 +109,16 @@ final class AuthWebView: UIViewController {
         return url
     }
     
-    func open() {
-        let navigationController = UINavigationController(rootViewController: self)
-        UIApplication.getTopViewController()?.present(navigationController, animated: true)
-        
-    }
-    
-    @objc func closeButtonClicked() {
+    @objc private func closeButtonClicked() {
         dismiss(animated: true)
     }
     
-    @objc func reloadButtonClicked() {
+    @objc private func reloadButtonClicked() {
         loadWebView()
     }
 }
+
+// MARK: - WKNavigationDelegate
 
 extension AuthWebView: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -132,9 +136,7 @@ extension AuthWebView: WKNavigationDelegate {
 // MARK: - TopViewController
 
 private extension UIApplication {
-
     class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-
         if let nav = base as? UINavigationController {
             return getTopViewController(base: nav.visibleViewController)
 
