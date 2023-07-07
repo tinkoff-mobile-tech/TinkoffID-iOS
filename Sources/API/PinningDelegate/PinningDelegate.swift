@@ -7,6 +7,7 @@
 
 import Foundation
 import TCSSSLPinning
+import WebKit
 
 protocol IPinningDelegate {}
 
@@ -52,5 +53,15 @@ extension PinningDelegate: URLSessionDelegate {
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         httpPublicKeyPinningService.urlSessionDidFinishEvents?(forBackgroundURLSession: session)
+    }
+}
+
+// MARK: - WKNavigationDelegate
+
+extension PinningDelegate: WKNavigationDelegate {
+    public func webView(_ webView: WKWebView,
+                        didReceive challenge: URLAuthenticationChallenge,
+                        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        httpPublicKeyPinningService.webView?(webView, didReceive: challenge, completionHandler: completionHandler)
     }
 }

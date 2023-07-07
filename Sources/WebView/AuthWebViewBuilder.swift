@@ -14,12 +14,15 @@ protocol IAuthWebViewBuilder {
 final class AuthWebViewBuilder: IAuthWebViewBuilder {
     
     private var baseUrl: String
+    private var pinningDelegate: PinningDelegate
     
-    init(baseUrl: String) {
+    init(baseUrl: String,
+         pinningDelegate: PinningDelegate) {
         self.baseUrl = baseUrl
+        self.pinningDelegate = pinningDelegate
     }
     
     func build(with options: AppLaunchOptions) -> AuthWebView {
-        return AuthWebView(options: options, baseUrl: baseUrl)
+        return AuthWebView(pinningDelegate: pinningDelegate, options: options, baseUrl: baseUrl)
     }
 }

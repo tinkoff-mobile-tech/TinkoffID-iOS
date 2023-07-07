@@ -19,9 +19,12 @@ final class AuthWebView: UIViewController {
     private let webView: WKWebView = WKWebView(frame: .zero)
     private let options: AppLaunchOptions
     private var baseUrl: String
+    private let pinningDelegate: WKNavigationDelegate
     
-    init(options: AppLaunchOptions,
+    init(pinningDelegate: PinningDelegate,
+         options: AppLaunchOptions,
          baseUrl: String) {
+        self.pinningDelegate = pinningDelegate
         self.options = options
         self.baseUrl = baseUrl
         super.init(nibName: nil, bundle: nil)
@@ -130,6 +133,13 @@ extension AuthWebView: WKNavigationDelegate {
         }
         decisionHandler(.allow)
         delegate?.authWebView(self, didOpen: url)
+    }
+    
+    public func webView(_ webView: WKWebView,
+                        didReceive challenge: URLAuthenticationChallenge,
+                        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+
+        pinningDelegate.webView?(webView, didReceive: challenge, completionHandler: completionHandler)
     }
 }
 
