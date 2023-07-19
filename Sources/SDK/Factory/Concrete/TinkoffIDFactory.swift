@@ -80,10 +80,14 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
             router: UIApplication.shared
         )
         
+        let pinningDelegate = PinningDelegate(hostAndPinsURL: environmentConfiguration.hostAndPinsUrl)
+        let urlSession = URLSession(configuration: URLSessionConfiguration.default,
+                                    delegate: pinningDelegate,
+                                    delegateQueue: nil)
         let requestBuilder = RequestBuilder(baseUrl: environmentConfiguration.apiBaseUrl)
         let api = API(
             requestBuilder: requestBuilder,
-            requestProcessor: URLSession.shared,
+            requestProcessor: urlSession,
             responseDispatcher: DispatchQueue.main
         )
         
@@ -102,6 +106,7 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
             appLauncher: appLauncher,
             callbackUrlParser: callbackUrlParser,
             api: api,
+            pinningDelegate: pinningDelegate,
             clientId: clientId,
             callbackUrl: callbackUrl
         )

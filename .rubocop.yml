@@ -249,6 +249,8 @@ Naming/AccessorMethodName:
 # ( ) for method calls
 Style/MethodCallWithArgsParentheses:
   Enabled: true
+  Exclude:
+    - "**/*.podspec"
   IgnoredMethods:
     - 'require'
     - 'require_relative'

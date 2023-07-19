@@ -65,6 +65,40 @@ pod 'TinkoffID'
     <string>tinkoffbank</string>
 </array>
 ```
++ Добавленная запись в `plist`, позволяющая Вашему приложению получать запасные сертификаты SSL Тинькофф.
+
+```
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <false/>
+    <key>NSExceptionDomains</key>
+    <dict>
+        <key>certs.tinkoff.ru</key>
+        <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+        </dict>
+        <key>tcsbank.ru</key>
+        <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+        </dict>
+        <key>tinkoff.ru</key>
+        <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+        </dict>
+        
+    </dict>
+</dict>
+```
 
 ## Структура публичной части SDK
 

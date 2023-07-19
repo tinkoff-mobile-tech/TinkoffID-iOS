@@ -26,6 +26,7 @@ final class TinkoffID: ITinkoffID {
     let appLauncher: IAppLauncher
     let callbackUrlParser: ICallbackURLParser
     let api: IAPI
+    let pinningDelegate: IPinningDelegate
     
     // MARK: - State
     private var currentProcess: AuthProcess?
@@ -38,12 +39,14 @@ final class TinkoffID: ITinkoffID {
          appLauncher: IAppLauncher,
          callbackUrlParser: ICallbackURLParser,
          api: IAPI,
+         pinningDelegate: IPinningDelegate,
          clientId: String,
          callbackUrl: String) {
         self.payloadGenerator = payloadGenerator
         self.appLauncher = appLauncher
         self.callbackUrlParser = callbackUrlParser
         self.api = api
+        self.pinningDelegate = pinningDelegate
         self.clientId = clientId
         self.callbackUrl = callbackUrl
     }
