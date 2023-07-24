@@ -39,11 +39,10 @@ final class URLSchemeAppLauncher: IAppLauncher {
             .map(router.canOpenURL) ?? false
     }
     
-    func launchApp(with options: AppLaunchOptions) throws {
+    func launchApp(with options: AppLaunchOptions, completion: @escaping ((Bool) -> Void)) throws {
         let appUrl = try builder.buildUrlScheme(with: options)
         
-        if !router.open(appUrl) {
-            // Не удалось запустить приложение
+        if !router.openWithFallback(appUrl, completion: completion) {
             throw Error.launchFailure
         }
     }

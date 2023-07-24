@@ -100,6 +100,8 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
         )
         
         let callbackUrlParser = CallbackURLParser()
+        let authWebViewBuilder = AuthWebViewBuilder(baseUrl: environmentConfiguration.apiBaseUrl,
+                                                    pinningDelegate: pinningDelegate)
         
         return TinkoffID(
             payloadGenerator: payloadGenerator,
@@ -107,6 +109,7 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
             callbackUrlParser: callbackUrlParser,
             api: api,
             pinningDelegate: pinningDelegate,
+            authWebViewBuilder: authWebViewBuilder,
             clientId: clientId,
             callbackUrl: callbackUrl
         )
