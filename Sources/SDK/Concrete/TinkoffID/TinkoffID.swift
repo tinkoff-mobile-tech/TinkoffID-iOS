@@ -26,7 +26,6 @@ final class TinkoffID: ITinkoffID {
     let appLauncher: IAppLauncher
     let callbackUrlParser: ICallbackURLParser
     let api: IAPI
-    let pinningDelegate: IPinningDelegate
     let authWebViewBuilder: IAuthWebViewBuilder
     
     // MARK: - State
@@ -40,7 +39,6 @@ final class TinkoffID: ITinkoffID {
          appLauncher: IAppLauncher,
          callbackUrlParser: ICallbackURLParser,
          api: IAPI,
-         pinningDelegate: IPinningDelegate,
          authWebViewBuilder: IAuthWebViewBuilder,
          clientId: String,
          callbackUrl: String) {
@@ -48,7 +46,6 @@ final class TinkoffID: ITinkoffID {
         self.appLauncher = appLauncher
         self.callbackUrlParser = callbackUrlParser
         self.api = api
-        self.pinningDelegate = pinningDelegate
         self.authWebViewBuilder = authWebViewBuilder
         self.clientId = clientId
         self.callbackUrl = callbackUrl
@@ -151,10 +148,10 @@ final class TinkoffID: ITinkoffID {
 }
 
 extension TinkoffID: IAuthWebViewDelegate {
-    func authWebView(_ webView: AuthWebView, didOpen url: URL) {
+    func authWebView(_ webView: IAuthWebView, didOpen url: URL) {
         let handled = handleCallbackUrl(url)
         if handled {
-            webView.dismiss(animated: true)
+            webView.dismiss()
         }
     }
 }

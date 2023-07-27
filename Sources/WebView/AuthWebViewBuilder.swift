@@ -8,7 +8,7 @@
 import Foundation
 
 protocol IAuthWebViewBuilder {
-    func build(with options: AppLaunchOptions) -> AuthWebView
+    func build(with options: AppLaunchOptions) -> IAuthWebView
 }
 
 final class AuthWebViewBuilder: IAuthWebViewBuilder {
@@ -22,7 +22,7 @@ final class AuthWebViewBuilder: IAuthWebViewBuilder {
         self.pinningDelegate = pinningDelegate
     }
     
-    func build(with options: AppLaunchOptions) -> AuthWebView {
+    func build(with options: AppLaunchOptions) -> IAuthWebView {
         return AuthWebView(pinningDelegate: pinningDelegate, options: options, baseUrl: baseUrl)
     }
 }

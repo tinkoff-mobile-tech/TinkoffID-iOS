@@ -108,7 +108,6 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
             appLauncher: appLauncher,
             callbackUrlParser: callbackUrlParser,
             api: api,
-            pinningDelegate: pinningDelegate,
             authWebViewBuilder: authWebViewBuilder,
             clientId: clientId,
             callbackUrl: callbackUrl

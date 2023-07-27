@@ -1,5 +1,5 @@
 //
-//  MockedAppLauncher.swift
+//  MockedWebView.swift
 //  TinkoffID
 //
 //  Copyright (c) 2021 Tinkoff
@@ -19,24 +19,14 @@
 import Foundation
 @testable import TinkoffID
 
-final class MockedAppLauncher: IAppLauncher {
-    var stubbedCanLaunchApp: Bool!
-    var stubbedLaunchAppError: Error?
-    var stubbedLaunchAppCompletionResult: Bool!
-    
-    var lastLaunchAppOptions: AppLaunchOptions?
-    
-    var canLaunchApp: Bool {
-        stubbedCanLaunchApp
+final class MockedWebView: IAuthWebView {
+    weak var delegate: IAuthWebViewDelegate?
+
+    var subbedDidOpenURLResult: URL!
+
+    func open() {
+        delegate?.authWebView(self, didOpen: subbedDidOpenURLResult)
     }
 
-    func launchApp(with options: AppLaunchOptions, completion: @escaping ((Bool) -> Void)) throws {
-        lastLaunchAppOptions = options
-
-        completion(stubbedLaunchAppCompletionResult)
-
-        if let error = stubbedLaunchAppError {
-            throw error
-        }
-    }
+    func dismiss() {}
 }

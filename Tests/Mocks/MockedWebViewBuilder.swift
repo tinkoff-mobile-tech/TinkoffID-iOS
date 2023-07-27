@@ -1,5 +1,5 @@
 //
-//  MockedAppLauncher.swift
+//  MockedWebViewBuilder.swift
 //  TinkoffID
 //
 //  Copyright (c) 2021 Tinkoff
@@ -16,27 +16,13 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import Foundation
 @testable import TinkoffID
 
-final class MockedAppLauncher: IAppLauncher {
-    var stubbedCanLaunchApp: Bool!
-    var stubbedLaunchAppError: Error?
-    var stubbedLaunchAppCompletionResult: Bool!
-    
-    var lastLaunchAppOptions: AppLaunchOptions?
-    
-    var canLaunchApp: Bool {
-        stubbedCanLaunchApp
-    }
+final class MockedWebViewBuilder: IAuthWebViewBuilder {
 
-    func launchApp(with options: AppLaunchOptions, completion: @escaping ((Bool) -> Void)) throws {
-        lastLaunchAppOptions = options
+    var stubbedAuthWebViewResult: IAuthWebView!
 
-        completion(stubbedLaunchAppCompletionResult)
-
-        if let error = stubbedLaunchAppError {
-            throw error
-        }
+    func build(with options: AppLaunchOptions) -> IAuthWebView {
+        stubbedAuthWebViewResult
     }
 }

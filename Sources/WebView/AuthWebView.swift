@@ -1,6 +1,6 @@
 //
 //  AuthWebView.swift
-//  Pods-TinkoffIDExample
+//  TinkoffID
 //
 //  Created by Aleksandr Moskalyuk on 20.06.2023.
 //
@@ -9,14 +9,22 @@ import Foundation
 import WebKit
 
 protocol IAuthWebViewDelegate: AnyObject {
-    func authWebView(_ webView: AuthWebView, didOpen url: URL)
+    func authWebView(_ webView: IAuthWebView, didOpen url: URL)
+}
+
+protocol IAuthWebView: AnyObject {
+    var delegate: IAuthWebViewDelegate? { get set }
+
+    func open()
+
+    func dismiss()
 }
 
 final class AuthWebView: UIViewController {
     
     weak var delegate: IAuthWebViewDelegate?
-    
-    private let webView: WKWebView = WKWebView(frame: .zero)
+
+    private let webView = WKWebView(frame: .zero)
     private let options: AppLaunchOptions
     private var baseUrl: String
     private let pinningDelegate: WKNavigationDelegate
@@ -41,8 +49,7 @@ final class AuthWebView: UIViewController {
                                                            style: .plain,
                                                            target: self,
                                                            action: #selector(closeButtonClicked))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Bundle.resourcesBundle?
-            .imageNamed("reload"),
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Bundle.resourcesBundle?.imageNamed("reload"),
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(reloadButtonClicked))
@@ -63,12 +70,6 @@ final class AuthWebView: UIViewController {
         }
         
         loadWebView()
-    }
-    
-    func open() {
-        let navigationController = UINavigationController(rootViewController: self)
-        UIApplication.getTopViewController()?.present(navigationController, animated: true)
-        
     }
     
     // MARK: - Private
@@ -118,6 +119,20 @@ final class AuthWebView: UIViewController {
     
     @objc private func reloadButtonClicked() {
         loadWebView()
+    }
+}
+
+// MARK: - IAuthWebView
+
+extension AuthWebView: IAuthWebView {
+
+    func open() {
+        let navigationController = UINavigationController(rootViewController: self)
+        UIApplication.getTopViewController()?.present(navigationController, animated: true)
+    }
+
+    func dismiss() {
+        dismiss(animated: true)
     }
 }
 
