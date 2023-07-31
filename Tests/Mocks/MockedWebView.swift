@@ -20,11 +20,12 @@ import Foundation
 @testable import TinkoffID
 
 final class MockedWebView: IAuthWebView {
+    
     weak var delegate: IAuthWebViewDelegate?
 
     var subbedDidOpenURLResult: URL!
 
-    func open() {
+    func open(from: UIViewController?) {
         delegate?.authWebView(self, didOpen: subbedDidOpenURLResult)
     }
 
