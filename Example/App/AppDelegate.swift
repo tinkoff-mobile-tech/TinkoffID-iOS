@@ -43,7 +43,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         let authController = AuthViewController(
             signInInitializer: tinkoffId,
             credentialsRefresher: tinkoffId,
-            signOutInitializer: tinkoffId
+            signOutInitializer: tinkoffId,
+            webViewPresentationProvider: tinkoffId
         )
         authController.tabBarItem = UITabBarItem(title: "Auth", image: nil, tag: 0)
 

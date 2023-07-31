@@ -60,4 +60,17 @@ public protocol ITinkoffSignOutInitiator {
     func signOut(with token: String, tokenTypeHint: SignOutTokenTypeHint, completion: @escaping SignOutCompletion)
 }
 
-public protocol ITinkoffID: ITinkoffAuthInitiator, ITinkoffAuthCallbackHandler, ITinkoffCredentialsRefresher, ITinkoffSignOutInitiator {}
+/// Объект, предоставляющий возможности отображения веб вью
+public protocol ITinkoffWebViewPresentationProvider {
+    
+    /// Предоставляет контроллер с которого будет отображен веб вью
+    /// - Parameters:
+    ///   - sourceController: Вью контроллер с которого будет показан вебвью при фоллбеке авторизации
+    func provide(_ sourceController: UIViewController)
+}
+
+public protocol ITinkoffID: ITinkoffAuthInitiator,
+                            ITinkoffAuthCallbackHandler,
+                            ITinkoffCredentialsRefresher,
+                            ITinkoffSignOutInitiator,
+                            ITinkoffWebViewPresentationProvider {}

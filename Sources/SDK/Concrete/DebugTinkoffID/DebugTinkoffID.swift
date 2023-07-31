@@ -92,6 +92,9 @@ final class DebugTinkoffID: ITinkoffID {
         }
     }
     
+    func provide(_ sourceViewController: UIViewController) {
+    }
+    
     // MARK: - Private
     
     private func resolveDebugAppResult(_ url: URL) -> DebugAppResult? {

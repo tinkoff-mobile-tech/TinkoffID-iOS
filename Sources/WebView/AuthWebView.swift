@@ -15,14 +15,14 @@ protocol IAuthWebViewDelegate: AnyObject {
 protocol IAuthWebView: AnyObject {
     var delegate: IAuthWebViewDelegate? { get set }
 
-    func open()
-
+    func open(from: UIViewController?)
     func dismiss()
 }
 
 final class AuthWebView: UIViewController {
     
     weak var delegate: IAuthWebViewDelegate?
+    weak var sourceViewController: UIViewController?
 
     private let webView: WKWebView = {
         let configuration = WKWebViewConfiguration()
@@ -130,9 +130,9 @@ final class AuthWebView: UIViewController {
 
 extension AuthWebView: IAuthWebView {
 
-    func open() {
+    func open(from: UIViewController?) {
         let navigationController = UINavigationController(rootViewController: self)
-        UIApplication.getTopViewController()?.present(navigationController, animated: true)
+        from?.present(navigationController, animated: true)
     }
 
     func dismiss() {
@@ -159,22 +159,5 @@ extension AuthWebView: WKNavigationDelegate {
                         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
 
         pinningDelegate.webView?(webView, didReceive: challenge, completionHandler: completionHandler)
-    }
-}
-
-// MARK: - TopViewController
-
-private extension UIApplication {
-    class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-        if let nav = base as? UINavigationController {
-            return getTopViewController(base: nav.visibleViewController)
-
-        } else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
-            return getTopViewController(base: selected)
-
-        } else if let presented = base?.presentedViewController {
-            return getTopViewController(base: presented)
-        }
-        return base
     }
 }

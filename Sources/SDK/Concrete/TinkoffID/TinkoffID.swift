@@ -31,6 +31,7 @@ final class TinkoffID: ITinkoffID {
     
     // MARK: - State
     private var currentProcess: AuthProcess?
+    private var authWebViewSourceController: UIViewController?
     
     // MARK: - Properties
     let clientId: String
@@ -88,7 +89,7 @@ final class TinkoffID: ITinkoffID {
     func openWebView(options: AppLaunchOptions) {
         let authWebView = authWebViewBuilder.build(with: options)
         authWebView.delegate = self
-        authWebView.open()
+        authWebView.open(from: authWebViewSourceController)
     }
     
     // MARK: - ITinkoffAuthCallbackHandler
@@ -125,6 +126,12 @@ final class TinkoffID: ITinkoffID {
     
     func signOut(with token: String, tokenTypeHint: SignOutTokenTypeHint, completion: @escaping SignOutCompletion) {
         signOut(with: token, tokenTypeHint, completion)
+    }
+    
+    // MARK: - ITinkoffWebViewPresentationProvider
+    
+    func provide(_ sourceController: UIViewController) {
+        authWebViewSourceController = sourceController
     }
     
     // MARK: - Private
