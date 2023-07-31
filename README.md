@@ -25,6 +25,7 @@
 * [Пример приложения](#Пример-приложения)
     * [AppDelegate](#AppDelegate)
     * [AuthViewController](#AuthViewController)
+    * [Веб Вью](#WebView)
 * [Поддержка](#Поддержка)
 * [Разработчики](#Разработчики)
 
@@ -109,6 +110,7 @@ pod 'TinkoffID'
 + `ITinkoffAuthCallbackHandler` - обработчик возврата в приложение из приложения Тинькофф
 + `ITinkoffCredentialsRefresher` - объект, умеющий обновлять `Credentials` по их `Refresh token`
 + `ITinkoffSignOutInitiator` - инициатор отзыва авторизационных данных
++ `ITinkoffWebViewPresentationProvider` - провайдет источника для показа веб вью
 
 В зависимости от архитектуры приложения можно использовать непосредственно`ITinkoffID` или каждый подпротокол отдельно в требуемой части системы.
 
@@ -333,7 +335,12 @@ SDK поставляется с примером приложения. Для з
 
 ### AuthViewController
 
-`AuthViewController` инициируется ссылками на объекты, реализующими `ITinkoffAuthInitiator`, `ITinkoffCredentialsRefresher` и `ITinkoffSignOutInitiator` соответственно.
+`AuthViewController` инициируется ссылками на объекты, реализующими `ITinkoffAuthInitiator`, `ITinkoffCredentialsRefresher`, `ITinkoffSignOutInitiator` и `ITinkoffWebViewPresentationProvider` соответственно.
+
+### WebView
+
+Приложение используемое для примера используется дефолтную конфигурацию `TargetAppConfiguration` в `TinkoffIDFactory`, где указано значение `shouldFallbackToWebView = true`.
+В таком случае при отсутствии установленного на телефон приложения Тиннькофф, СДК попробует открыть вебвью с авторизацией. Для этого надо дать источник для веб вью при помощи `ITinkoffWebViewPresentationProvider`, например как в методе `viewDidLoad` внутри `AuthViewController`.
 
 В текущей реализации все эти ссылки указывают на один и тот же экземпляр объекта `TinkoffID`, реализующий интерфейс `ITinkoffID`. Такой подход был выбран для демонстрации возможности использования подинтерфейсов `ITinkoffID` в той или иной части системы. Пользователь SDK вправе сам решать использовать ли ему единый интерфейс `ITinkoffID` или необходимый подинтерфейс в зависимости от архитектуры приложения. 
 
