@@ -24,7 +24,11 @@ final class AuthWebView: UIViewController {
     
     weak var delegate: IAuthWebViewDelegate?
 
-    private let webView = WKWebView(frame: .zero)
+    private let webView: WKWebView = {
+        let configuration = WKWebViewConfiguration()
+        configuration.websiteDataStore = .nonPersistent()
+        return WKWebView(frame: .zero, configuration: configuration)
+    }()
     private let options: AppLaunchOptions
     private var baseUrl: String
     private let pinningDelegate: WKNavigationDelegate
