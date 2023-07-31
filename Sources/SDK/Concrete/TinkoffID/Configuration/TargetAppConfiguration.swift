@@ -25,4 +25,8 @@ public protocol TargetAppConfiguration {
     
     /// Ссылка для проведения авторизации
     var authUrl: String { get }
+    
+    /// Будет ли открываться WebView при неуспешной попытке открыть приложение,
+    /// или будет выдана ошибка
+    var shouldFallbackToWebView: Bool { get }
 }

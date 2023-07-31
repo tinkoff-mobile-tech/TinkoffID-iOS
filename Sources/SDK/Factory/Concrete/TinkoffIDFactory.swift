@@ -110,7 +110,8 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
             api: api,
             authWebViewBuilder: authWebViewBuilder,
             clientId: clientId,
-            callbackUrl: callbackUrl
+            callbackUrl: callbackUrl,
+            shouldFallbackToWebView: appConfiguration.shouldFallbackToWebView
         )
     }
 }

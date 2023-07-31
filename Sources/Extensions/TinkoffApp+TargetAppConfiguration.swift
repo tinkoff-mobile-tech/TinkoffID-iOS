@@ -32,4 +32,8 @@ extension TinkoffApp: TargetAppConfiguration {
             return "https://tinkoff.ru/partner_auth"
         }
     }
+    
+    public var shouldFallbackToWebView: Bool {
+        true
+    }
 }

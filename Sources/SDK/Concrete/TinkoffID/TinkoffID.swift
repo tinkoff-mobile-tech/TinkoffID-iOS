@@ -27,6 +27,7 @@ final class TinkoffID: ITinkoffID {
     let callbackUrlParser: ICallbackURLParser
     let api: IAPI
     let authWebViewBuilder: IAuthWebViewBuilder
+    let shouldFallbackToWebView: Bool
     
     // MARK: - State
     private var currentProcess: AuthProcess?
@@ -41,7 +42,8 @@ final class TinkoffID: ITinkoffID {
          api: IAPI,
          authWebViewBuilder: IAuthWebViewBuilder,
          clientId: String,
-         callbackUrl: String) {
+         callbackUrl: String,
+         shouldFallbackToWebView: Bool) {
         self.payloadGenerator = payloadGenerator
         self.appLauncher = appLauncher
         self.callbackUrlParser = callbackUrlParser
@@ -49,6 +51,7 @@ final class TinkoffID: ITinkoffID {
         self.authWebViewBuilder = authWebViewBuilder
         self.clientId = clientId
         self.callbackUrl = callbackUrl
+        self.shouldFallbackToWebView = shouldFallbackToWebView
     }
     
     // MARK: - ITinkoffAuthInitiator
@@ -67,9 +70,12 @@ final class TinkoffID: ITinkoffID {
                                       completion: completion)
             
             try appLauncher.launchApp(with: options, completion: { [weak self] didLaunchMobileApp in
-                if !didLaunchMobileApp {
-                    self?.openWebView(options: options)
+                guard let self = self else { return }
+                guard !didLaunchMobileApp && self.shouldFallbackToWebView else {
+                    completion(.failure(.failedToLaunchApp))
+                    return
                 }
+                self.openWebView(options: options)
             })
 
             currentProcess = process
