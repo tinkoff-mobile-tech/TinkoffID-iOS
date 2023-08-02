@@ -27,6 +27,7 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
     private let callbackUrl: String
     private let appConfiguration: TargetAppConfiguration
     private let environmentConfiguration: EnvironmentConfiguration
+    private let webViewSourceProvider: IAuthWebViewSourceProvider?
     
     // MARK: - Initialization
     
@@ -41,13 +42,15 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
         clientId: String,
         callbackUrl: String,
         app: TinkoffApp = .bank,
-        environment: TinkoffEnvironment = .production
+        environment: TinkoffEnvironment = .production,
+        webViewSourceProvider: IAuthWebViewSourceProvider? = DefaultAuthWebViewSourceProvider.instance
     ) {
         self.init(
             clientId: clientId,
             callbackUrl: callbackUrl,
             appConfiguration: app,
-            environmentConfiguration: environment
+            environmentConfiguration: environment,
+            webViewSourceProvider: webViewSourceProvider
         )
     }
     
@@ -62,12 +65,14 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
         clientId: String,
         callbackUrl: String,
         appConfiguration: TargetAppConfiguration,
-        environmentConfiguration: EnvironmentConfiguration
+        environmentConfiguration: EnvironmentConfiguration,
+        webViewSourceProvider: IAuthWebViewSourceProvider? = DefaultAuthWebViewSourceProvider.instance
     ) {
         self.clientId = clientId
         self.callbackUrl = callbackUrl
         self.environmentConfiguration = environmentConfiguration
         self.appConfiguration = appConfiguration
+        self.webViewSourceProvider = webViewSourceProvider
     }
     
     // MARK: - ITinkoffIDFactory
@@ -109,9 +114,10 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
             callbackUrlParser: callbackUrlParser,
             api: api,
             authWebViewBuilder: authWebViewBuilder,
+            webViewSourceProvider: webViewSourceProvider,
             clientId: clientId,
             callbackUrl: callbackUrl,
-            shouldFallbackToWebView: appConfiguration.shouldFallbackToWebView
+            universalLinksOnly: appConfiguration.usesUniversalLinks
         )
     }
 }

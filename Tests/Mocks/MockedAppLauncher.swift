@@ -30,7 +30,7 @@ final class MockedAppLauncher: IAppLauncher {
         stubbedCanLaunchApp
     }
 
-    func launchApp(with options: AppLaunchOptions, completion: @escaping ((Bool) -> Void)) throws {
+    func launchApp(with options: AppLaunchOptions, universalLinksOnly: Bool = false, completion: @escaping ((Bool) -> Void)) throws {
         lastLaunchAppOptions = options
 
         completion(stubbedLaunchAppCompletionResult)

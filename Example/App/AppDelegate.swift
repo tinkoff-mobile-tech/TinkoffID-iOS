@@ -26,26 +26,31 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     lazy var tinkoffId: ITinkoffID = {
-        let clientId = ""
+        let clientId = "asdf"
         let callbackUrl = "tinkoffauthpartner://"
         
         assert(!clientId.isEmpty, "Please specify an client ID")
         
+        let appConfiguration = AuthWebViewTargetAppConfiguration()
+        
         let factory = TinkoffIDFactory(
             clientId: clientId,
-            callbackUrl: callbackUrl
+            callbackUrl: callbackUrl,
+            appConfiguration: appConfiguration,
+            environmentConfiguration: TinkoffEnvironment.production,
+            webViewSourceProvider: self
         )
         
         return factory.build()
     }()
     
+    lazy var authController: AuthViewController = {
+        AuthViewController(signInInitializer: tinkoffId,
+                           credentialsRefresher: tinkoffId,
+                           signOutInitializer: tinkoffId)
+    }()
+    
     func applicationDidFinishLaunching(_ application: UIApplication) {
-        let authController = AuthViewController(
-            signInInitializer: tinkoffId,
-            credentialsRefresher: tinkoffId,
-            signOutInitializer: tinkoffId,
-            webViewPresentationProvider: tinkoffId
-        )
         authController.tabBarItem = UITabBarItem(title: "Auth", image: nil, tag: 0)
 
         let tinkoffButtonsController = TinkoffButtonsViewController()
@@ -67,5 +72,27 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return tinkoffId.handleCallbackUrl(url)
+    }
+}
+
+// MARK: - AuthWebView Usage
+
+extension AppDelegate: IAuthWebViewSourceProvider {
+    func getSourceViewController() -> UIViewController {
+        authController
+    }
+}
+
+final class AuthWebViewTargetAppConfiguration: TargetAppConfiguration {
+    var urlScheme: String {
+        "https://tinkoff.ru"
+    }
+    
+    var usesUniversalLinks: Bool {
+        true
+    }
+    
+    var authUrl: String {
+        "https://tinkoff.ru/partner_auth"
     }
 }

@@ -23,10 +23,9 @@ public protocol TargetAppConfiguration {
     /// URL-схема, используемая для определения установлено ли заданное приложение
     var urlScheme: String { get }
     
+    /// Признак того является ли URL-схема универсальной ссылкой (https://...)
+    var usesUniversalLinks: Bool { get }
+    
     /// Ссылка для проведения авторизации
     var authUrl: String { get }
-    
-    /// Будет ли открываться WebView при неуспешной попытке открыть приложение,
-    /// или будет выдана ошибка
-    var shouldFallbackToWebView: Bool { get }
 }

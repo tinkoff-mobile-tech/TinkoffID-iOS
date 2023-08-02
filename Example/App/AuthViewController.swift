@@ -25,7 +25,6 @@ final class AuthViewController: UIViewController {
     private let authInitializer: ITinkoffAuthInitiator
     private let credentialsRefresher: ITinkoffCredentialsRefresher
     private let signOutInitializer: ITinkoffSignOutInitiator
-    private let webViewPresentationProvider: ITinkoffWebViewPresentationProvider
     
     // MARK: - UI
     lazy var credentialsLabel = UILabel()
@@ -45,12 +44,10 @@ final class AuthViewController: UIViewController {
     
     init(signInInitializer: ITinkoffAuthInitiator,
          credentialsRefresher: ITinkoffCredentialsRefresher,
-         signOutInitializer: ITinkoffSignOutInitiator,
-         webViewPresentationProvider: ITinkoffWebViewPresentationProvider) {
+         signOutInitializer: ITinkoffSignOutInitiator) {
         self.authInitializer = signInInitializer
         self.credentialsRefresher = credentialsRefresher
         self.signOutInitializer = signOutInitializer
-        self.webViewPresentationProvider = webViewPresentationProvider
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -64,7 +61,6 @@ final class AuthViewController: UIViewController {
         
         setupUserInterface()
         updateUserInterface()
-        webViewPresentationProvider.provide(self)
     }
     
     // MARK: - User interactions

@@ -44,9 +44,10 @@ class TinkoffIDTests: XCTestCase {
                         callbackUrlParser: callbackParser,
                         api: api,
                         authWebViewBuilder: authWebViewBuilder,
+                        webViewSourceProvider: nil,
                         clientId: clientId,
                         callbackUrl: callbackUrl,
-                        shouldFallbackToWebView: false)
+                        universalLinksOnly: false)
     }
     
     func testThatIsTinkoffAuthAvailableValueDependsOnAppLauncher() {

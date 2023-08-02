@@ -27,7 +27,8 @@ final class TinkoffID: ITinkoffID {
     let callbackUrlParser: ICallbackURLParser
     let api: IAPI
     let authWebViewBuilder: IAuthWebViewBuilder
-    let shouldFallbackToWebView: Bool
+    let webViewSourceProvider: IAuthWebViewSourceProvider?
+    let universalLinksOnly: Bool
     
     // MARK: - State
     private var currentProcess: AuthProcess?
@@ -42,17 +43,19 @@ final class TinkoffID: ITinkoffID {
          callbackUrlParser: ICallbackURLParser,
          api: IAPI,
          authWebViewBuilder: IAuthWebViewBuilder,
+         webViewSourceProvider: IAuthWebViewSourceProvider?,
          clientId: String,
          callbackUrl: String,
-         shouldFallbackToWebView: Bool) {
+         universalLinksOnly: Bool) {
         self.payloadGenerator = payloadGenerator
         self.appLauncher = appLauncher
         self.callbackUrlParser = callbackUrlParser
         self.api = api
         self.authWebViewBuilder = authWebViewBuilder
+        self.webViewSourceProvider = webViewSourceProvider
         self.clientId = clientId
         self.callbackUrl = callbackUrl
-        self.shouldFallbackToWebView = shouldFallbackToWebView
+        self.universalLinksOnly = universalLinksOnly
     }
     
     // MARK: - ITinkoffAuthInitiator
@@ -70,13 +73,18 @@ final class TinkoffID: ITinkoffID {
             let process = AuthProcess(appLaunchOptions: options,
                                       completion: completion)
             
-            try appLauncher.launchApp(with: options, completion: { [weak self] didLaunchMobileApp in
+            try appLauncher.launchApp(with: options,
+                                      universalLinksOnly: self.universalLinksOnly,
+                                      completion: { [weak self] didLaunchMobileApp in
                 guard let self = self else { return }
-                guard !didLaunchMobileApp && self.shouldFallbackToWebView else {
+                
+                guard !didLaunchMobileApp else { return }
+                
+                if let _ = self.webViewSourceProvider {
+                    self.openWebView(options: options)
+                } else {
                     completion(.failure(.failedToLaunchApp))
-                    return
                 }
-                self.openWebView(options: options)
             })
 
             currentProcess = process
@@ -89,7 +97,7 @@ final class TinkoffID: ITinkoffID {
     func openWebView(options: AppLaunchOptions) {
         let authWebView = authWebViewBuilder.build(with: options)
         authWebView.delegate = self
-        authWebView.open(from: authWebViewSourceController)
+        authWebView.open(from: webViewSourceProvider?.getSourceViewController())
     }
     
     // MARK: - ITinkoffAuthCallbackHandler
@@ -126,12 +134,6 @@ final class TinkoffID: ITinkoffID {
     
     func signOut(with token: String, tokenTypeHint: SignOutTokenTypeHint, completion: @escaping SignOutCompletion) {
         signOut(with: token, tokenTypeHint, completion)
-    }
-    
-    // MARK: - ITinkoffWebViewPresentationProvider
-    
-    func provide(_ sourceController: UIViewController) {
-        authWebViewSourceController = sourceController
     }
     
     // MARK: - Private

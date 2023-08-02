@@ -19,6 +19,7 @@
 import Foundation
 
 extension TinkoffApp: TargetAppConfiguration {
+    
     public var urlScheme: String {
         switch self {
         case .bank:
@@ -26,14 +27,14 @@ extension TinkoffApp: TargetAppConfiguration {
         }
     }
     
+    public var usesUniversalLinks: Bool {
+        false
+    }
+    
     public var authUrl: String {
         switch self {
         case .bank:
             return "https://tinkoff.ru/partner_auth"
         }
-    }
-    
-    public var shouldFallbackToWebView: Bool {
-        true
     }
 }
