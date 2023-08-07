@@ -33,7 +33,6 @@ protocol IAuthWebView: AnyObject {
 final class AuthWebView: UIViewController {
     
     weak var delegate: IAuthWebViewDelegate?
-    weak var sourceViewController: UIViewController?
 
     private let webView: WKWebView = {
         let configuration = WKWebViewConfiguration()
