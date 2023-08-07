@@ -25,5 +25,5 @@ protocol IAppLauncher {
     var canLaunchApp: Bool { get }
     
     /// Запускает приложение с заданными опциями
-    func launchApp(with options: AppLaunchOptions, completion: @escaping ((Bool) -> Void)) throws
+    func launchApp(with options: AppLaunchOptions, universalLinksOnly: Bool, completion: @escaping ((Bool) -> Void)) throws
 }

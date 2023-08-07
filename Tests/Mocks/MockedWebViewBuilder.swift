@@ -1,8 +1,8 @@
 //
-//  AuthWebViewBuilder.swift
+//  MockedWebViewBuilder.swift
 //  TinkoffID
 //
-//  Copyright (c) 2023 Tinkoff
+//  Copyright (c) 2021 Tinkoff
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -16,24 +16,13 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import Foundation
+@testable import TinkoffID
 
-protocol IAuthWebViewBuilder {
-    func build(with options: AppLaunchOptions) -> IAuthWebView
-}
+final class MockedWebViewBuilder: IAuthWebViewBuilder {
 
-final class AuthWebViewBuilder: IAuthWebViewBuilder {
-    
-    private var baseUrl: String
-    private var pinningDelegate: PinningDelegate
-    
-    init(baseUrl: String,
-         pinningDelegate: PinningDelegate) {
-        self.baseUrl = baseUrl
-        self.pinningDelegate = pinningDelegate
-    }
-    
+    var stubbedAuthWebViewResult: IAuthWebView!
+
     func build(with options: AppLaunchOptions) -> IAuthWebView {
-        return AuthWebView(pinningDelegate: pinningDelegate, options: options, baseUrl: baseUrl)
+        stubbedAuthWebViewResult
     }
 }

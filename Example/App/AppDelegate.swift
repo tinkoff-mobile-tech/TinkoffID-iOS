@@ -33,18 +33,20 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let factory = TinkoffIDFactory(
             clientId: clientId,
-            callbackUrl: callbackUrl
+            callbackUrl: callbackUrl,
+            webViewSourceProvider: self
         )
         
         return factory.build()
     }()
     
+    lazy var authController: AuthViewController = {
+        AuthViewController(signInInitializer: tinkoffId,
+                           credentialsRefresher: tinkoffId,
+                           signOutInitializer: tinkoffId)
+    }()
+    
     func applicationDidFinishLaunching(_ application: UIApplication) {
-        let authController = AuthViewController(
-            signInInitializer: tinkoffId,
-            credentialsRefresher: tinkoffId,
-            signOutInitializer: tinkoffId
-        )
         authController.tabBarItem = UITabBarItem(title: "Auth", image: nil, tag: 0)
 
         let tinkoffButtonsController = TinkoffButtonsViewController()
@@ -66,5 +68,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return tinkoffId.handleCallbackUrl(url)
+    }
+}
+
+// MARK: - AuthWebView Usage
+
+extension AppDelegate: IAuthWebViewSourceProvider {
+    func getSourceViewController() -> UIViewController {
+        authController
     }
 }

@@ -1,22 +1,44 @@
 //
 //  AuthWebView.swift
-//  Pods-TinkoffIDExample
+//  TinkoffID
 //
-//  Created by Aleksandr Moskalyuk on 20.06.2023.
+//  Copyright (c) 2023 Tinkoff
 //
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 
 import Foundation
 import WebKit
 
 protocol IAuthWebViewDelegate: AnyObject {
-    func authWebView(_ webView: AuthWebView, didOpen url: URL)
+    func authWebView(_ webView: IAuthWebView, didOpen url: URL)
+}
+
+protocol IAuthWebView: AnyObject {
+    var delegate: IAuthWebViewDelegate? { get set }
+
+    func open(from: UIViewController?)
+    func dismiss()
 }
 
 final class AuthWebView: UIViewController {
     
     weak var delegate: IAuthWebViewDelegate?
-    
-    private let webView: WKWebView = WKWebView(frame: .zero)
+
+    private let webView: WKWebView = {
+        let configuration = WKWebViewConfiguration()
+        configuration.websiteDataStore = .nonPersistent()
+        return WKWebView(frame: .zero, configuration: configuration)
+    }()
     private let options: AppLaunchOptions
     private var baseUrl: String
     private let pinningDelegate: WKNavigationDelegate
@@ -41,8 +63,7 @@ final class AuthWebView: UIViewController {
                                                            style: .plain,
                                                            target: self,
                                                            action: #selector(closeButtonClicked))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Bundle.resourcesBundle?
-            .imageNamed("reload"),
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Bundle.resourcesBundle?.imageNamed("reload"),
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(reloadButtonClicked))
@@ -63,12 +84,6 @@ final class AuthWebView: UIViewController {
         }
         
         loadWebView()
-    }
-    
-    func open() {
-        let navigationController = UINavigationController(rootViewController: self)
-        UIApplication.getTopViewController()?.present(navigationController, animated: true)
-        
     }
     
     // MARK: - Private
@@ -121,6 +136,20 @@ final class AuthWebView: UIViewController {
     }
 }
 
+// MARK: - IAuthWebView
+
+extension AuthWebView: IAuthWebView {
+
+    func open(from: UIViewController?) {
+        let navigationController = UINavigationController(rootViewController: self)
+        from?.present(navigationController, animated: true)
+    }
+
+    func dismiss() {
+        dismiss(animated: true)
+    }
+}
+
 // MARK: - WKNavigationDelegate
 
 extension AuthWebView: WKNavigationDelegate {
@@ -140,22 +169,5 @@ extension AuthWebView: WKNavigationDelegate {
                         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
 
         pinningDelegate.webView?(webView, didReceive: challenge, completionHandler: completionHandler)
-    }
-}
-
-// MARK: - TopViewController
-
-private extension UIApplication {
-    class func getTopViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-        if let nav = base as? UINavigationController {
-            return getTopViewController(base: nav.visibleViewController)
-
-        } else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
-            return getTopViewController(base: selected)
-
-        } else if let presented = base?.presentedViewController {
-            return getTopViewController(base: presented)
-        }
-        return base
     }
 }

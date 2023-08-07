@@ -25,4 +25,7 @@ public protocol TargetAppConfiguration {
     
     /// Ссылка для проведения авторизации
     var authUrl: String { get }
+
+    /// Признак того является ли `authUrl` универсальной ссылкой (https://...)
+    var usesUniversalLinks: Bool { get }
 }

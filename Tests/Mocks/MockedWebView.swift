@@ -1,5 +1,5 @@
 //
-//  TinkoffApp+TargetAppConfiguration.swift
+//  MockedWebView.swift
 //  TinkoffID
 //
 //  Copyright (c) 2021 Tinkoff
@@ -17,27 +17,17 @@
 //  limitations under the License.
 
 import Foundation
+@testable import TinkoffID
 
-extension TinkoffApp: TargetAppConfiguration {
+final class MockedWebView: IAuthWebView {
     
-    public var urlScheme: String {
-        switch self {
-        case .bank:
-            return "tinkoffbank://"
-        }
+    weak var delegate: IAuthWebViewDelegate?
+
+    var subbedDidOpenURLResult: URL!
+
+    func open(from: UIViewController?) {
+        delegate?.authWebView(self, didOpen: subbedDidOpenURLResult)
     }
-    
-    public var usesUniversalLinks: Bool {
-        switch self {
-        case .bank:
-            return true
-        }
-    }
-    
-    public var authUrl: String {
-        switch self {
-        case .bank:
-            return "https://tinkoff.ru/partner_auth"
-        }
-    }
+
+    func dismiss() {}
 }

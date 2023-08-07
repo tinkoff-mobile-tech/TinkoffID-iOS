@@ -22,16 +22,19 @@ import Foundation
 final class MockedAppLauncher: IAppLauncher {
     var stubbedCanLaunchApp: Bool!
     var stubbedLaunchAppError: Error?
+    var stubbedLaunchAppCompletionResult: Bool!
     
     var lastLaunchAppOptions: AppLaunchOptions?
     
     var canLaunchApp: Bool {
         stubbedCanLaunchApp
     }
-    
-    func launchApp(with options: AppLaunchOptions) throws {
+
+    func launchApp(with options: AppLaunchOptions, universalLinksOnly: Bool = false, completion: @escaping ((Bool) -> Void)) throws {
         lastLaunchAppOptions = options
-        
+
+        completion(stubbedLaunchAppCompletionResult)
+
         if let error = stubbedLaunchAppError {
             throw error
         }

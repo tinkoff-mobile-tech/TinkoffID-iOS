@@ -28,7 +28,7 @@ protocol IURLRouter {
     func open(_ url: URL) -> Bool
     
     /// Открывает заданный URL c фоллбэком на открытие вебвью в случае если приложение не установлено
-    func openWithFallback(_ url: URL, completion: @escaping ((Bool) -> Void)) -> Bool
+    func openWithFallback(_ url: URL, universalLinksOnly: Bool, completion: @escaping ((Bool) -> Void)) -> Bool
 }
 
 extension UIApplication: IURLRouter {
@@ -40,10 +40,10 @@ extension UIApplication: IURLRouter {
         return true
     }
     
-    func openWithFallback(_ url: URL, completion: @escaping ((Bool) -> Void)) -> Bool {
+    func openWithFallback(_ url: URL, universalLinksOnly: Bool, completion: @escaping ((Bool) -> Void)) -> Bool {
         guard canOpenURL(url) else { return false }
         
-        open(url, options: [.universalLinksOnly : true], completionHandler: completion)
+        open(url, options: [.universalLinksOnly : universalLinksOnly], completionHandler: completion)
         
         return true
     }

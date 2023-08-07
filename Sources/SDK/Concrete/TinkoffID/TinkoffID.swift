@@ -26,11 +26,13 @@ final class TinkoffID: ITinkoffID {
     let appLauncher: IAppLauncher
     let callbackUrlParser: ICallbackURLParser
     let api: IAPI
-    let pinningDelegate: IPinningDelegate
     let authWebViewBuilder: IAuthWebViewBuilder
+    let webViewSourceProvider: IAuthWebViewSourceProvider?
+    let universalLinksOnly: Bool
     
     // MARK: - State
     private var currentProcess: AuthProcess?
+    private var authWebViewSourceController: UIViewController?
     
     // MARK: - Properties
     let clientId: String
@@ -40,18 +42,20 @@ final class TinkoffID: ITinkoffID {
          appLauncher: IAppLauncher,
          callbackUrlParser: ICallbackURLParser,
          api: IAPI,
-         pinningDelegate: IPinningDelegate,
          authWebViewBuilder: IAuthWebViewBuilder,
+         webViewSourceProvider: IAuthWebViewSourceProvider?,
          clientId: String,
-         callbackUrl: String) {
+         callbackUrl: String,
+         universalLinksOnly: Bool) {
         self.payloadGenerator = payloadGenerator
         self.appLauncher = appLauncher
         self.callbackUrlParser = callbackUrlParser
         self.api = api
-        self.pinningDelegate = pinningDelegate
         self.authWebViewBuilder = authWebViewBuilder
+        self.webViewSourceProvider = webViewSourceProvider
         self.clientId = clientId
         self.callbackUrl = callbackUrl
+        self.universalLinksOnly = universalLinksOnly
     }
     
     // MARK: - ITinkoffAuthInitiator
@@ -69,9 +73,17 @@ final class TinkoffID: ITinkoffID {
             let process = AuthProcess(appLaunchOptions: options,
                                       completion: completion)
             
-            try appLauncher.launchApp(with: options, completion: { [weak self] didLaunchMobileApp in
-                if !didLaunchMobileApp {
-                    self?.openWebView(options: options)
+            try appLauncher.launchApp(with: options,
+                                      universalLinksOnly: self.universalLinksOnly,
+                                      completion: { [weak self] didLaunchMobileApp in
+                guard let self = self else { return }
+                
+                guard !didLaunchMobileApp else { return }
+                
+                if self.universalLinksOnly, let _ = self.webViewSourceProvider {
+                    self.openWebView(options: options)
+                } else {
+                    completion(.failure(.failedToLaunchApp))
                 }
             })
 
@@ -85,7 +97,7 @@ final class TinkoffID: ITinkoffID {
     func openWebView(options: AppLaunchOptions) {
         let authWebView = authWebViewBuilder.build(with: options)
         authWebView.delegate = self
-        authWebView.open()
+        authWebView.open(from: webViewSourceProvider?.getSourceViewController())
     }
     
     // MARK: - ITinkoffAuthCallbackHandler
@@ -151,10 +163,10 @@ final class TinkoffID: ITinkoffID {
 }
 
 extension TinkoffID: IAuthWebViewDelegate {
-    func authWebView(_ webView: AuthWebView, didOpen url: URL) {
+    func authWebView(_ webView: IAuthWebView, didOpen url: URL) {
         let handled = handleCallbackUrl(url)
         if handled {
-            webView.dismiss(animated: true)
+            webView.dismiss()
         }
     }
 }

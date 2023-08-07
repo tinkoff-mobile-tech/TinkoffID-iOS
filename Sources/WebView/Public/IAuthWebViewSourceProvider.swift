@@ -1,5 +1,5 @@
 //
-//  AuthWebViewBuilder.swift
+//  IAuthWebViewProvider.swift
 //  TinkoffID
 //
 //  Copyright (c) 2023 Tinkoff
@@ -18,22 +18,6 @@
 
 import Foundation
 
-protocol IAuthWebViewBuilder {
-    func build(with options: AppLaunchOptions) -> IAuthWebView
-}
-
-final class AuthWebViewBuilder: IAuthWebViewBuilder {
-    
-    private var baseUrl: String
-    private var pinningDelegate: PinningDelegate
-    
-    init(baseUrl: String,
-         pinningDelegate: PinningDelegate) {
-        self.baseUrl = baseUrl
-        self.pinningDelegate = pinningDelegate
-    }
-    
-    func build(with options: AppLaunchOptions) -> IAuthWebView {
-        return AuthWebView(pinningDelegate: pinningDelegate, options: options, baseUrl: baseUrl)
-    }
+public protocol IAuthWebViewSourceProvider {
+    func getSourceViewController() -> UIViewController
 }
