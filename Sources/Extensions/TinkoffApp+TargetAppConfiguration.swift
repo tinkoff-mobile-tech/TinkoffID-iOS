@@ -19,10 +19,18 @@
 import Foundation
 
 extension TinkoffApp: TargetAppConfiguration {
+    
     public var urlScheme: String {
         switch self {
         case .bank:
             return "tinkoffbank://"
+        }
+    }
+    
+    public var usesUniversalLinks: Bool {
+        switch self {
+        case .bank:
+            return true
         }
     }
     

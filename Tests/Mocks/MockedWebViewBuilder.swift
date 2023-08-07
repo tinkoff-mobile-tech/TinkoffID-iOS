@@ -1,5 +1,5 @@
 //
-//  Environment+EnvironmentConfiguration.swift
+//  MockedWebViewBuilder.swift
 //  TinkoffID
 //
 //  Copyright (c) 2021 Tinkoff
@@ -16,18 +16,13 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-import Foundation
-import TCSSSLPinning
+@testable import TinkoffID
 
-extension TinkoffEnvironment: EnvironmentConfiguration {
-    public var hostAndPinsUrl: String? {
-        return HPKPServiceConstants.Configuration.productionHostAndPinsURL.absoluteString
-    }
-    
-    public var apiBaseUrl: String {
-        switch self {
-        case .production:
-            return "https://id.tinkoff.ru"
-        }
+final class MockedWebViewBuilder: IAuthWebViewBuilder {
+
+    var stubbedAuthWebViewResult: IAuthWebView!
+
+    func build(with options: AppLaunchOptions) -> IAuthWebView {
+        stubbedAuthWebViewResult
     }
 }

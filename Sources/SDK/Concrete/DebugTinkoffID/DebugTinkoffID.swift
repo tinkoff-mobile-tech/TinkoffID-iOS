@@ -17,6 +17,7 @@
 //  limitations under the License.
 
 import Foundation
+import UIKit
 
 final class DebugTinkoffID: ITinkoffID {
     
@@ -90,6 +91,10 @@ final class DebugTinkoffID: ITinkoffID {
                 completion(.failure(Error.logoutForbidden))
             }
         }
+    }
+    
+    func getSourceViewController() -> UIViewController {
+        UIViewController()
     }
     
     // MARK: - Private

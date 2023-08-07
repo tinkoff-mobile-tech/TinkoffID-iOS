@@ -1,8 +1,8 @@
 //
-//  Environment+EnvironmentConfiguration.swift
+//  AuthWebViewBuilder.swift
 //  TinkoffID
 //
-//  Copyright (c) 2021 Tinkoff
+//  Copyright (c) 2023 Tinkoff
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,17 +17,23 @@
 //  limitations under the License.
 
 import Foundation
-import TCSSSLPinning
 
-extension TinkoffEnvironment: EnvironmentConfiguration {
-    public var hostAndPinsUrl: String? {
-        return HPKPServiceConstants.Configuration.productionHostAndPinsURL.absoluteString
+protocol IAuthWebViewBuilder {
+    func build(with options: AppLaunchOptions) -> IAuthWebView
+}
+
+final class AuthWebViewBuilder: IAuthWebViewBuilder {
+    
+    private var baseUrl: String
+    private var pinningDelegate: PinningDelegate
+    
+    init(baseUrl: String,
+         pinningDelegate: PinningDelegate) {
+        self.baseUrl = baseUrl
+        self.pinningDelegate = pinningDelegate
     }
     
-    public var apiBaseUrl: String {
-        switch self {
-        case .production:
-            return "https://id.tinkoff.ru"
-        }
+    func build(with options: AppLaunchOptions) -> IAuthWebView {
+        return AuthWebView(pinningDelegate: pinningDelegate, options: options, baseUrl: baseUrl)
     }
 }

@@ -55,7 +55,7 @@ class URLSchemeAppLauncherTests: XCTestCase {
         router.nextOpenResult = true
         
         // When
-        try! launcher.launchApp(with: expectedOptions)
+        try! launcher.launchApp(with: expectedOptions, universalLinksOnly: false, completion: { _ in })
         
         // Then
         XCTAssertEqual(expectedOptions, schemeBuilder.lastOptions)
@@ -70,7 +70,7 @@ class URLSchemeAppLauncherTests: XCTestCase {
         
         // When
         assertNoError(message: "App has to be launched") {
-            try launcher.launchApp(with: .stub)
+            try launcher.launchApp(with: .stub, universalLinksOnly: false) { _ in }
         }
         
         // Then
@@ -83,7 +83,7 @@ class URLSchemeAppLauncherTests: XCTestCase {
         router.nextOpenResult = false
         
         // When
-        let when = { try self.launcher.launchApp(with: .stub) }
+        let when = { try self.launcher.launchApp(with: .stub,  universalLinksOnly: false) { _ in } }
         
         // Then
         assertErrorEqual(URLSchemeAppLauncher.Error.launchFailure, when)

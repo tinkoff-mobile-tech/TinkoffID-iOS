@@ -1,8 +1,8 @@
 //
-//  Environment+EnvironmentConfiguration.swift
+//  IAuthWebViewProvider.swift
 //  TinkoffID
 //
-//  Copyright (c) 2021 Tinkoff
+//  Copyright (c) 2023 Tinkoff
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,17 +17,7 @@
 //  limitations under the License.
 
 import Foundation
-import TCSSSLPinning
 
-extension TinkoffEnvironment: EnvironmentConfiguration {
-    public var hostAndPinsUrl: String? {
-        return HPKPServiceConstants.Configuration.productionHostAndPinsURL.absoluteString
-    }
-    
-    public var apiBaseUrl: String {
-        switch self {
-        case .production:
-            return "https://id.tinkoff.ru"
-        }
-    }
+public protocol IAuthWebViewSourceProvider {
+    func getSourceViewController() -> UIViewController
 }

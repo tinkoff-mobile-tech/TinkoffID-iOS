@@ -22,4 +22,6 @@ import Foundation
 public protocol EnvironmentConfiguration {
     /// Базовый URL API
     var apiBaseUrl: String { get }
+    /// URL Host and Pins для работы с кастомными сертификатами TLS/SSL
+    var hostAndPinsUrl: String? { get }
 }

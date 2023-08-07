@@ -45,4 +45,16 @@ final class MockedURLRouter: IURLRouter {
         
         return nextOpenResult
     }
+
+    func openWithFallback(_ url: URL, universalLinksOnly: Bool, completion: @escaping ((Bool) -> Void)) -> Bool {
+        lastOpenedURL = url
+
+        defer {
+            nextOpenResult = nil
+        }
+
+        completion(nextOpenResult)
+
+        return nextOpenResult
+    }
 }

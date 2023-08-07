@@ -27,6 +27,7 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
     private let callbackUrl: String
     private let appConfiguration: TargetAppConfiguration
     private let environmentConfiguration: EnvironmentConfiguration
+    private let webViewSourceProvider: IAuthWebViewSourceProvider?
     
     // MARK: - Initialization
     
@@ -41,13 +42,15 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
         clientId: String,
         callbackUrl: String,
         app: TinkoffApp = .bank,
-        environment: TinkoffEnvironment = .production
+        environment: TinkoffEnvironment = .production,
+        webViewSourceProvider: IAuthWebViewSourceProvider? = DefaultAuthWebViewSourceProvider.instance
     ) {
         self.init(
             clientId: clientId,
             callbackUrl: callbackUrl,
             appConfiguration: app,
-            environmentConfiguration: environment
+            environmentConfiguration: environment,
+            webViewSourceProvider: webViewSourceProvider
         )
     }
     
@@ -62,12 +65,14 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
         clientId: String,
         callbackUrl: String,
         appConfiguration: TargetAppConfiguration,
-        environmentConfiguration: EnvironmentConfiguration
+        environmentConfiguration: EnvironmentConfiguration,
+        webViewSourceProvider: IAuthWebViewSourceProvider? = DefaultAuthWebViewSourceProvider.instance
     ) {
         self.clientId = clientId
         self.callbackUrl = callbackUrl
         self.environmentConfiguration = environmentConfiguration
         self.appConfiguration = appConfiguration
+        self.webViewSourceProvider = webViewSourceProvider
     }
     
     // MARK: - ITinkoffIDFactory
@@ -80,10 +85,14 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
             router: UIApplication.shared
         )
         
+        let pinningDelegate = PinningDelegate(hostAndPinsURL: environmentConfiguration.hostAndPinsUrl)
+        let urlSession = URLSession(configuration: URLSessionConfiguration.default,
+                                    delegate: pinningDelegate,
+                                    delegateQueue: nil)
         let requestBuilder = RequestBuilder(baseUrl: environmentConfiguration.apiBaseUrl)
         let api = API(
             requestBuilder: requestBuilder,
-            requestProcessor: URLSession.shared,
+            requestProcessor: urlSession,
             responseDispatcher: DispatchQueue.main
         )
         
@@ -96,14 +105,19 @@ public final class TinkoffIDFactory: ITinkoffIDFactory {
         )
         
         let callbackUrlParser = CallbackURLParser()
+        let authWebViewBuilder = AuthWebViewBuilder(baseUrl: environmentConfiguration.apiBaseUrl,
+                                                    pinningDelegate: pinningDelegate)
         
         return TinkoffID(
             payloadGenerator: payloadGenerator,
             appLauncher: appLauncher,
             callbackUrlParser: callbackUrlParser,
             api: api,
+            authWebViewBuilder: authWebViewBuilder,
+            webViewSourceProvider: webViewSourceProvider,
             clientId: clientId,
-            callbackUrl: callbackUrl
+            callbackUrl: callbackUrl,
+            universalLinksOnly: appConfiguration.usesUniversalLinks
         )
     }
 }

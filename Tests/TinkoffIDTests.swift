@@ -25,6 +25,9 @@ class TinkoffIDTests: XCTestCase {
     private var appLauncher: MockedAppLauncher!
     private var callbackParser: MockedCallbackURLParser!
     private var api: MockedAPI!
+    private var authWebView: MockedWebView!
+    private var authWebViewBuilder: MockedWebViewBuilder!
+
     private let clientId = "some_client"
     private let callbackUrl = "nowhere://"
 
@@ -33,13 +36,18 @@ class TinkoffIDTests: XCTestCase {
         appLauncher = MockedAppLauncher()
         callbackParser = MockedCallbackURLParser()
         api = MockedAPI()
+        authWebView = MockedWebView()
+        authWebViewBuilder = MockedWebViewBuilder()
         
         sdk = TinkoffID(payloadGenerator: payloadGenerator,
                         appLauncher: appLauncher,
                         callbackUrlParser: callbackParser,
                         api: api,
+                        authWebViewBuilder: authWebViewBuilder,
+                        webViewSourceProvider: nil,
                         clientId: clientId,
-                        callbackUrl: callbackUrl)
+                        callbackUrl: callbackUrl,
+                        universalLinksOnly: false)
     }
     
     func testThatIsTinkoffAuthAvailableValueDependsOnAppLauncher() {
@@ -56,6 +64,7 @@ class TinkoffIDTests: XCTestCase {
     func testThatAppLauncherWillLaunchAppWithCorrectOptionsWhenStartingTinkoffAuth() {
         // Given
         payloadGenerator.stubbedPayload = .stub
+        appLauncher.stubbedLaunchAppCompletionResult = true
         
         let expectedOptions = AppLaunchOptions(clientId: clientId,
                                                callbackUrl: callbackUrl,
@@ -95,6 +104,7 @@ class TinkoffIDTests: XCTestCase {
     func testThatHandleCallbackUrlWillReturnFalseIfCallbackUrlDoesNotMatchExpectedOne() {
         // Given
         payloadGenerator.stubbedPayload = .stub
+        appLauncher.stubbedLaunchAppCompletionResult = true
         
         let callbackUrl = incorrectCallbackUrl
         
@@ -113,6 +123,7 @@ class TinkoffIDTests: XCTestCase {
         // Given
         payloadGenerator.stubbedPayload = .stub
         callbackParser.stubbedParseResult = .cancelled
+        appLauncher.stubbedLaunchAppCompletionResult = true
         
         // When
         var callbackUrlHandlingResult: Bool!
@@ -129,6 +140,7 @@ class TinkoffIDTests: XCTestCase {
         // Given
         payloadGenerator.stubbedPayload = .stub
         callbackParser.stubbedParseResult = CallbackURLParseResult?.none
+        appLauncher.stubbedLaunchAppCompletionResult = true
 
 
         // When
@@ -144,6 +156,7 @@ class TinkoffIDTests: XCTestCase {
         // Given
         callbackParser.stubbedParseResult = .cancelled
         payloadGenerator.stubbedPayload = .stub
+        appLauncher.stubbedLaunchAppCompletionResult = true
         
         // When
         let result = startTinkoffAuth { _ in
@@ -160,6 +173,7 @@ class TinkoffIDTests: XCTestCase {
         // Given
         callbackParser.stubbedParseResult = .unavailable
         payloadGenerator.stubbedPayload = .stub
+        appLauncher.stubbedLaunchAppCompletionResult = true
         
         // When
         let result = startTinkoffAuth { _ in
@@ -180,6 +194,7 @@ class TinkoffIDTests: XCTestCase {
         api.obtainCredentialsResult = .failure(ErrorStub.foo)
         callbackParser.stubbedParseResult = .codeObtained(code)
         payloadGenerator.stubbedPayload = payload
+        appLauncher.stubbedLaunchAppCompletionResult = true
         
         // When
         _ = startTinkoffAuth { _ in
@@ -201,6 +216,7 @@ class TinkoffIDTests: XCTestCase {
         api.obtainCredentialsResult = .failure(ErrorStub.foo)
         callbackParser.stubbedParseResult = .codeObtained(code)
         payloadGenerator.stubbedPayload = payload
+        appLauncher.stubbedLaunchAppCompletionResult = true
         
         // When
         let result = startTinkoffAuth { _ in
@@ -221,6 +237,7 @@ class TinkoffIDTests: XCTestCase {
         api.obtainCredentialsResult = .success(.stub)
         callbackParser.stubbedParseResult = .codeObtained(code)
         payloadGenerator.stubbedPayload = payload
+        appLauncher.stubbedLaunchAppCompletionResult = true
         
         // When
         let result = startTinkoffAuth { _ in
