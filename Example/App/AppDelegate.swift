@@ -26,18 +26,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     lazy var tinkoffId: ITinkoffID = {
-        let clientId = "asdf"
+        let clientId = ""
         let callbackUrl = "tinkoffauthpartner://"
         
         assert(!clientId.isEmpty, "Please specify an client ID")
         
-        let appConfiguration = AuthWebViewTargetAppConfiguration()
-        
         let factory = TinkoffIDFactory(
             clientId: clientId,
             callbackUrl: callbackUrl,
-            appConfiguration: appConfiguration,
-            environmentConfiguration: TinkoffEnvironment.production,
             webViewSourceProvider: self
         )
         
@@ -80,19 +76,5 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: IAuthWebViewSourceProvider {
     func getSourceViewController() -> UIViewController {
         authController
-    }
-}
-
-final class AuthWebViewTargetAppConfiguration: TargetAppConfiguration {
-    var urlScheme: String {
-        "https://tinkoff.ru"
-    }
-    
-    var usesUniversalLinks: Bool {
-        true
-    }
-    
-    var authUrl: String {
-        "https://tinkoff.ru/partner_auth"
     }
 }

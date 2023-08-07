@@ -80,7 +80,7 @@ final class TinkoffID: ITinkoffID {
                 
                 guard !didLaunchMobileApp else { return }
                 
-                if let _ = self.webViewSourceProvider {
+                if self.universalLinksOnly, let _ = self.webViewSourceProvider {
                     self.openWebView(options: options)
                 } else {
                     completion(.failure(.failedToLaunchApp))

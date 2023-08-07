@@ -28,7 +28,10 @@ extension TinkoffApp: TargetAppConfiguration {
     }
     
     public var usesUniversalLinks: Bool {
-        false
+        switch self {
+        case .bank:
+            return true
+        }
     }
     
     public var authUrl: String {
